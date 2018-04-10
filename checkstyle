@@ -31,12 +31,14 @@
 
 SCRIPTDIR=`dirname $0`
 
+set -f
+
 # Move along.  Nothing to format here.
-FILES='./* :!ci/ :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.bmp :!*.icc :!*.rtf'
+FILES='./* :!.gitattributes :!ci/ :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.bmp :!*.icc :!*.rtf'
 
 # C, Java, and GAS files
-CGFILES='*.c *.h *.h.in example.txt *.S'
-NCGFILES=':!*.c :!*.h :!*.h.in :!example.txt :!*.S'
+CGFILES='*.c *.h *.h.in example.txt *.S :!*.inc.h'
+NCGFILES=':!*.c :!*.h :!*.h.in :!example.txt :!*.S *.inc.h'
 CJGFILES="$CGFILES"' *.java *.java.in :!tjbenchtest.java.in :!tjexampletest.java.in'
 NCJGFILES="$NCGFILES"' :!*.java :!*.java.in'
 
@@ -50,7 +52,7 @@ fi
 
 filter_nasm_comments()
 {
-	pcregrep -v '(simd|win)/.*(\.asm|\.inc):.*;.*'"$EXPR"
+	pcregrep -v '(simd|win)/.*(\.asm|\.inc\.h|\.inc):.*;.*'"$EXPR"
 }
 
 filter_loongson_comments()
@@ -148,7 +150,7 @@ echo '---------- {something ----------'
 echo
 EXPR='{[^ \+\-\}]'
 EXCLEXPR='(?!{@link)'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' |
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' |
 	filter_nasm_comments |
 	filter_loongson_comments
 # Process GAS files separately (we only check these because they contain some
@@ -167,7 +169,7 @@ echo
 echo '---------- something} ----------'
 echo
 EXPR='[^ \-\{@]}'
-git grep -P "$EXPR" -- $FILES ':!*.S' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' |
+git grep -P "$EXPR" -- $FILES ':!*.S' ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' |
 	grep -vE '\.java: +\* +.*'"$EXPR" |
 	filter_nasm_comments |
 	filter_loongson_comments
@@ -191,7 +193,7 @@ echo '---------- something{ ----------'
 echo
 EXPR='[^ @]{'
 EXCLEXPR='(?!\.{@link)(?![\]\>]{\+\-})'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' |
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' |
 	filter_nasm_comments |
 	filter_loongson_comments
 unset EXPR
@@ -201,7 +203,7 @@ echo
 echo '---------- }something ----------'
 echo
 EXPR='}[^ ;,\)\.\(\[\<\-]'
-git grep -E "$EXPR" -- $FILES ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!release/' ':!/tj*test*.in'
+git grep -E "$EXPR" -- $FILES ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!release/' ':!/tj*test*.in'
 unset EXPR
 echo
 
@@ -226,7 +228,7 @@ echo '---------- Semicolon spacing in one-liners ----------'
 echo
 EXPR='; [^ }/\\]'
 EXCLEXPR='(?! *for \()(?!.*; \)$)(?!.*\) {)'
-grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!*.1' ':!/*.txt' ':!release/*.in' ':!*.asm' ':!*.inc' ':!simd/jsimdcfg.inc.h' ':!/tj*test*.in' |
+grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!.travis.yml'  ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!*.1' ':!/*.txt' ':!release/*.in' ':!*.asm' ':!*.inc' ':!simd/jsimdcfg.inc.h' ':!/tj*test*.in' |
 	filter_quotes
 unset EXPR
 unset EXCLEXPR
@@ -344,14 +346,14 @@ echo
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/]|\>+|\<+|&+|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"
 EXCLEXPR='(?!1\-2\.nolist 0xFFFF)(?!U\-stack noalloc)'
-git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' |
+git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 	filter_nasm_comments |
 	pcregrep -v 'simd/.*(\.asm|\.inc):    .*'"$EXPR" |
-	grep -vE 'simd/.*(\.asm|\.inc):%(define|include)'
+	grep -vE 'simd/.*(\.asm|\.inc\.h|\.inc):%(define|include)'
 
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"'[^;]'
-git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.md' ':!Brewfile' ':!*CMakeLists.txt' ':!README.ijg' ':!appveyor.yml' ':!change.log' ':!*.1'  ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!/tj*test*.in'
+git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!Brewfile' ':!*CMakeLists.txt' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1'  ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!/tj*test*.in'
 
 # Process C, Java, and GAS files separately, so we can filter out the comments
 OP='(?!\-\>)(?!\+\+)(?!\-\-)(?!\*\*)([=\+\-\*/%&\|\^\!\<\>]*=|[\+\*/%]|\-(?![0-9])|\>+|\<+|&&|(?<!\))&|\|+|\^)'
@@ -369,7 +371,7 @@ EXCLEXPR='(?! *case.*\:)(?! *default\:)(?! *bailout\:)'
 grep_without_c_comments "$EXCLEXPR""$EXPR" $CJGFILES |
 	filter_quotes |
 	grep -vE '(\.c|\.java|\.S|\.h):[ ]*[A-Za-z0-9_\\\(\)]+:' |
-	grep -vE '(\.c|\.java): *(case|default|bailout).*:'
+	grep -vE '(\.c|\.java|\.h): *(case|default|bailout).*:'
 
 unset EXPR
 unset EXCLEXPR
@@ -380,14 +382,14 @@ echo
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/]|\>+|\<+|&+|\|+|\^)'
 EXPR="$OP"'[\(]*\b[^ ]'
 EXCLEXPR='(?!-F_[0-9]_[0-9]{3})(?!-[0-9\.]+$)(?!-2\.nolist 0xFFFF)(?!-stack noalloc)'
-git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' |
+git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 	filter_nasm_comments |
 	pcregrep -v 'simd/.*(\.asm|\.inc):    .*'"$EXPR" |
-	grep -vE 'simd/.*(\.asm|\.inc):%(define|include)'
+	grep -vE 'simd/.*(\.asm|\.inc\.h|\.inc):[%#](define|include)'
 
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR="$OP"'[\(]*\b[^ ]'
-git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.md' ':!Brewfile' ':!*CMakeLists.txt' ':!README.ijg' ':!appveyor.yml' ':!change.log' ':!*.1'  ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!/tj*test*.in'
+git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!Brewfile' ':!*CMakeLists.txt' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1'  ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!/tj*test*.in'
 
 # NOTE: We can't check for *something or &something effectively, because
 # there's no way to distinguish those errors from valid pointer/address
@@ -431,10 +433,11 @@ echo '********** DETECTING INCORRECT OPERATOR CONTINUANCE **********'
 echo
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^|\?|\:)'
 EXPR='^ *'"$OP"' +'
-git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.md' ':!appveyor.yml' ':!change.log' ':!/*.txt'
+git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.md' ':!*.yml' ':!change.log' ':!/*.txt'
 EXCLEXPR='(?!\|\| cinfo\-\>in_color_space == JCS_RGB)(?!\&\& cinfo->out_color_space \!= JCS_RGB)'
 EXPR='^ *'"$EXCLEXPR""$OP"' +'
-grep_without_c_comments "$EXPR" $CJGFILES
+grep_without_c_comments "$EXPR" $CJGFILES |
+	grep -vE 'simd/loongson/.*: +:'
 unset EXPR
 echo
 
