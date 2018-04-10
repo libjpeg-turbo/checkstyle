@@ -34,7 +34,7 @@ SCRIPTDIR=`dirname $0`
 set -f
 
 # Move along.  Nothing to format here.
-FILES='./* :!.gitattributes :!ci/ :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.bmp :!*.icc :!*.rtf'
+FILES='./* :!.gitattributes :!ci/ :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.bmp :!*.icc :!*.rtf :!simd/nasm/jsimdcfg.inc'
 
 # C, Java, and GAS files
 CGFILES='*.c *.h *.h.in example.txt *.S :!*.inc.h'
@@ -115,7 +115,7 @@ echo # ************************************************************************
 
 echo '********** DETECTING C++-STYLE COMMENTS **********'
 echo
-git grep -P '(?<!http:)(?<!https:)(?<!ftp:)(?<!file:)//' -- $FILES ':!simd/mips/*.S' ':!simd/jsimdcfg.inc.h' ':!*.java' ':!/*.in'
+git grep -P '(?<!http:)(?<!https:)(?<!ftp:)(?<!file:)//' -- $FILES ':!simd/mips/*.S' ':!*.inc.h' ':!*.java' ':!/*.in'
 echo
 
 echo # ************************************************************************
@@ -228,7 +228,7 @@ echo '---------- Semicolon spacing in one-liners ----------'
 echo
 EXPR='; [^ }/\\]'
 EXCLEXPR='(?! *for \()(?!.*; \)$)(?!.*\) {)'
-grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!.travis.yml'  ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!*.1' ':!/*.txt' ':!release/*.in' ':!*.asm' ':!*.inc' ':!simd/jsimdcfg.inc.h' ':!/tj*test*.in' |
+grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!.travis.yml'  ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!*.1' ':!/*.txt' ':!release/*.in' ':!*.asm' ':!*.inc' ':!*.inc.h' ':!/tj*test*.in' |
 	filter_quotes
 unset EXPR
 unset EXCLEXPR
@@ -285,7 +285,7 @@ git grep -E '^[#%]define {2,}' -- $FILES
 # #define something(...) something
 git grep -E '^[#%]define [A-Za-z0-9_]+\([^\(\)]+\) [^ \\{]' -- $FILES
 # #define something something
-git grep -E '^[#%]define [^\(\) ]+ [^ \\{/]' -- $FILES ':!java/org_libjpegturbo_turbojpeg_TJ.h' ':!release/rpm.spec.in' ':!win/jsimdcfg.inc'
+git grep -E '^[#%]define [^\(\) ]+ [^ \\{/]' -- $FILES ':!java/org_libjpegturbo_turbojpeg_TJ.h' ':!release/rpm.spec.in'
 unset EXCLEXPR
 echo
 
