@@ -30,6 +30,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 SCRIPTDIR=`dirname $0`
+
 # Move along.  Nothing to format here.
 FILES='./* :!ci/ :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.bmp :!*.icc :!*.rtf'
 
@@ -38,6 +39,14 @@ CGFILES='*.c *.h *.h.in example.txt *.S'
 NCGFILES=':!*.c :!*.h :!*.h.in :!example.txt :!*.S'
 CJGFILES="$CGFILES"' *.java *.java.in :!tjbenchtest.java.in :!tjexampletest.java.in'
 NCJGFILES="$NCGFILES"' :!*.java :!*.java.in'
+
+if [ "$1" = "-selftest" ]; then
+	pushd $SCRIPTDIR >/dev/null 2>&1
+	SCRIPTDIR=.
+	FILES="styletest.c"
+	CGFILES="styletest.c"
+	CJGFILES="styletest.c"
+fi
 
 filter_nasm_comments()
 {
@@ -412,7 +421,7 @@ echo
 
 echo '---------- - FIX* ----------'
 echo
-git grep -P '(\(|, )\- FIX'
+git grep -P '(\(|, )\- FIX' -- $FILES
 echo
 
 echo # ************************************************************************
@@ -443,3 +452,7 @@ EXCLEXPR='(?<!if \(.)(?<!return \(.)(?<!for \(.)(?<!while \(.)(?<!switch \(.)(?<
 grep_without_c_comments "$EXPR""$EXCLEXPR" $CJGFILES |
 	filter_quotes
 echo
+
+if [ "$1" = "-selftest" ]; then
+	popd >/dev/null 2>&1
+fi

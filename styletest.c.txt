@@ -1,0 +1,320 @@
+
+********** DETECTING WHITESPACE ERRORS **********
+---------- Tab characters ----------
+
+styletest.c:	something;  /* hit */
+
+---------- Alt-Space ----------
+
+styletest.c:  /* hit */
+
+---------- Blank line(s) at top of file ----------
+
+styletest.c:
+
+---------- No blank line at end of file ----------
+
+
+---------- General whitespace errors ----------
+
+styletest.c:415: new blank line at EOF.
+
+
+********** DETECTING C++-STYLE COMMENTS **********
+
+styletest.c:// hit
+
+
+********** DETECTING BAD LINE CONTINUATION SPACING **********
+
+styletest.c:#define something()  /* hit */  \
+styletest.c:#define something()  /* hit */\
+
+
+********** DETECTING UNATTACHED else/catch **********
+
+styletest.c:  something;
+}
+else (something_else)  /* hit */
+styletest.c:  something;
+}
+catch (something_else)  /* hit */
+
+
+********** DETECTING INCORRECT BRACKET SPACING **********
+---------- Function-like macro with unattached bracket ----------
+
+styletest.c:{ \
+
+---------- {something ----------
+
+styletest.c:{something;  /* hit */
+styletest.c:{something;}  /* hit */
+
+---------- { something ... ----------
+
+styletest.c:{ something;  /* hit */
+
+---------- something} ----------
+
+styletest.c:something;}  /* hit */
+styletest.c:{something;}  /* hit */
+
+---------- ... something } ----------
+
+styletest.c:something; }  /* hit */
+
+---------- something{ ----------
+
+styletest.c:something{  /* hit */
+
+---------- }something ----------
+
+styletest.c:}something  /* hit */
+
+
+********** DETECTING INCORRECT STATEMENT SPACING **********
+---------- if( ----------
+
+styletest.c:if()  /* hit */
+
+---------- for( ----------
+
+styletest.c:for()  /* hit */
+
+---------- else( ----------
+
+styletest.c:else()  /* hit */
+
+---------- catch( ----------
+
+styletest.c:catch()  /* hit */
+
+---------- while( ----------
+
+styletest.c:while()  /* hit */
+
+---------- do( ----------
+
+styletest.c:do()  /* hit */
+
+---------- switch( ----------
+
+styletest.c:switch()  /* hit */
+
+---------- Semicolon spacing in one-liners ----------
+
+styletest.c:do_stuff; do_other_stuff;  ### hit ###
+
+
+********** DETECTING INCORRECT FUNCTION/TYPE CAST SPACING **********
+---------- (type*) ----------
+
+styletest.c:  (type*)hello  /* hit */
+
+---------- (type**) ----------
+
+styletest.c:  (type**)hello  /* hit */
+
+---------- (type) var ----------
+
+styletest.c:  (type) var  ### hit ###
+styletest.c:(type) var  ### hit ###
+styletest.c:something + (type) var  ### hit ###
+styletest.c:  return (type) var  ### hit ###
+styletest.c:  ((type) var  ### hit ###
+styletest.c:((type) var  ### hit ###
+styletest.c:return ((type) var  ### hit ###
+styletest.c:(type) (var)  ### hit ###
+
+---------- (*cinfo->something->method)(args) ----------
+
+styletest.c:  (*cinfo->something->method)(args)  /* hit */
+styletest.c:  ( (*cinfo->something->method)(args)  /* hit */
+styletest.c:  ((*cinfo->something->method)(args)  /* hit */
+styletest.c:  (*something)(args)  /* hit */
+
+
+********** DETECTING INCORRECT MACRO SPACING **********
+
+styletest.c:#define macro \
+   something;  /* hit */
+styletest.c:#define  macro  something  /* hit */
+styletest.c:#define macro(a, b) something  /* hit */
+styletest.c:#define macro something  /* hit */
+
+
+********** DETECTING INCORRECT COMMA SPACING **********
+---------- [ ], ----------
+
+styletest.c:comma ,comma ,down ,doobie ,doo ,down ,down ,comma ,comma  ### hit ###
+
+---------- ,something ----------
+
+styletest.c:comma,comma,down,doobie,doo,down,down,comma,comma  ### hit ###
+styletest.c:comma ,comma ,down ,doobie ,doo ,down ,down ,comma ,comma  ### hit ###
+
+
+********** DETECTING INCORRECT OPERATOR SPACING **********
+---------- Incorrect pointer operator spacing ----------
+
+styletest.c:char* something;  ### hit ###
+styletest.c:something*  ### hit ###
+
+---------- Incorrect address operator spacing ----------
+
+styletest.c:char& something;  ### hit ###
+styletest.c:something&  ### hit ###
+
+---------- No space before other operators ----------
+
+styletest.c:char* something;  ### hit ###
+styletest.c:char& something;  ### hit ###
+styletest.c:something=  ### hit ###
+styletest.c:(something)=  ### hit ###
+styletest.c:something[something]=  ### hit ###
+styletest.c:something+=  ### hit ###
+styletest.c:something-=  ### hit ###
+styletest.c:something*=  ### hit ###
+styletest.c:something/=  ### hit ###
+styletest.c:something%=  ### hit ###
+styletest.c:something&=  ### hit ###
+styletest.c:something|=  ### hit ###
+styletest.c:something^=  ### hit ###
+styletest.c:something<<=  ### hit ###
+styletest.c:something>>=  ### hit ###
+styletest.c:something+  ### hit ###
+styletest.c:something-  ### hit ###
+styletest.c:something*  ### hit ###
+styletest.c:something/  ### hit ###
+styletest.c:something%  ### hit ###
+styletest.c:something==  ### hit ###
+styletest.c:something!=  ### hit ###
+styletest.c:something>  ### hit ###
+styletest.c:something<  ### hit ###
+styletest.c:something>=  ### hit ###
+styletest.c:something<=  ### hit ###
+styletest.c:something&&  ### hit ###
+styletest.c:something||  ### hit ###
+styletest.c:something&  ### hit ###
+styletest.c:something|  ### hit ###
+styletest.c:something^  ### hit ###
+styletest.c:something<<  ### hit ###
+styletest.c:something>>  ### hit ###
+styletest.c:something? something: something  ### hit ###
+
+---------- No space after other operators ----------
+
+styletest.c:=something  ### hit ###
+styletest.c:=(something)  ### hit ###
+styletest.c:+=something  ### hit ###
+styletest.c:-=something  ### hit ###
+styletest.c:*=something  ### hit ###
+styletest.c:&=something  ### hit ###
+styletest.c:%=something  ### hit ###
+styletest.c:/=something  ### hit ###
+styletest.c:|=something  ### hit ###
+styletest.c:^=something  ### hit ###
+styletest.c:<<=something  ### hit ###
+styletest.c:>>=something  ### hit ###
+styletest.c:+something  ### hit ###
+styletest.c:/something  ### hit ###
+styletest.c:%something  ### hit ###
+styletest.c:==something  ### hit ###
+styletest.c:!=something  ### hit ###
+styletest.c:>something  ### hit ###
+styletest.c:<something  ### hit ###
+styletest.c:>=something  ### hit ###
+styletest.c:<=something  ### hit ###
+styletest.c:&&something  ### hit ###
+styletest.c:||something  ### hit ###
+styletest.c:|something  ### hit ###
+styletest.c:^something  ### hit ###
+styletest.c:<<something  ### hit ###
+styletest.c:>>something  ### hit ###
+styletest.c:something ?something :something  ### hit ###
+
+---------- [!|~] something ----------
+
+styletest.c:! something  /* hit */
+styletest.c:~ something  /* hit */
+
+---------- - FIX* ----------
+
+styletest.c:, - FIX  /* hit */
+styletest.c:(- FIX  /* hit */
+
+
+********** DETECTING INCORRECT OPERATOR CONTINUANCE **********
+
+styletest.c:= something  ### miss (hit on operator continuance) ###
+styletest.c:= (something)  ### miss (hit on operator continuance) ###
+styletest.c:+= something  ### miss (hit on operator continuance) ###
+styletest.c:-= something  ### miss (hit on operator continuance) ###
+styletest.c:*= something  ### miss (hit on operator continuance) ###
+styletest.c:&= something  ### miss (hit on operator continuance) ###
+styletest.c:%= something  ### miss (hit on operator continuance) ###
+styletest.c:/= something  ### miss (hit on operator continuance) ###
+styletest.c:|= something  ### miss (hit on operator continuance) ###
+styletest.c:^= something  ### miss (hit on operator continuance) ###
+styletest.c:<<= something  ### miss (hit on operator continuance) ###
+styletest.c:>>= something  ### miss (hit on operator continuance) ###
+styletest.c:+ something  ### miss (hit on operator continuance) ###
+styletest.c:- something  ### miss (hit on operator continuance) ###
+styletest.c:* something  ### miss (hit on operator continuance) ###
+styletest.c:/ something  ### miss (hit on operator continuance) ###
+styletest.c:% something  ### miss (hit on operator continuance) ###
+styletest.c:== something  ### miss (hit on operator continuance) ###
+styletest.c:!= something  ### miss (hit on operator continuance) ###
+styletest.c:> something  ### miss (hit on operator continuance) ###
+styletest.c:< something  ### miss (hit on operator continuance) ###
+styletest.c:>= something  ### miss (hit on operator continuance) ###
+styletest.c:<= something  ### miss (hit on operator continuance) ###
+styletest.c:&& something  ### miss (hit on operator continuance) ###
+styletest.c:|| something  ### miss (hit on operator continuance) ###
+styletest.c:| something  ### miss (hit on operator continuance) ###
+styletest.c:^ something  ### miss (hit on operator continuance) ###
+styletest.c:<< something  ### miss (hit on operator continuance) ###
+styletest.c:>> something  ### miss (hit on operator continuance) ###
+styletest.c:& something  ### miss (hit on operator continuance) ###
+styletest.c:? something  ### hit ###
+styletest.c:: something  ### hit ###
+
+
+********** DETECTING INCORRECT FUNCTION SPACING **********
+
+styletest.c:= something  ### miss (hit on operator continuance) ###
+styletest.c:= (something)  ### miss (hit on operator continuance) ###
+styletest.c:+= something  ### miss (hit on operator continuance) ###
+styletest.c:-= something  ### miss (hit on operator continuance) ###
+styletest.c:*= something  ### miss (hit on operator continuance) ###
+styletest.c:&= something  ### miss (hit on operator continuance) ###
+styletest.c:%= something  ### miss (hit on operator continuance) ###
+styletest.c:/= something  ### miss (hit on operator continuance) ###
+styletest.c:|= something  ### miss (hit on operator continuance) ###
+styletest.c:^= something  ### miss (hit on operator continuance) ###
+styletest.c:<<= something  ### miss (hit on operator continuance) ###
+styletest.c:>>= something  ### miss (hit on operator continuance) ###
+styletest.c:+ something  ### miss (hit on operator continuance) ###
+styletest.c:-something  ### miss (can't check because indistinguishable from unary -)(hit on operator continuance) ###
+styletest.c:- something  ### miss (hit on operator continuance) ###
+styletest.c:*something  ### miss (can't check because indistinguishable from pointer)(hit on operator continuance) ###
+styletest.c:* something  ### miss (hit on operator continuance) ###
+styletest.c:/ something  ### miss (hit on operator continuance) ###
+styletest.c:% something  ### miss (hit on operator continuance) ###
+styletest.c:== something  ### miss (hit on operator continuance) ###
+styletest.c:!= something  ### miss (hit on operator continuance) ###
+styletest.c:> something  ### miss (hit on operator continuance) ###
+styletest.c:< something  ### miss (hit on operator continuance) ###
+styletest.c:>= something  ### miss (hit on operator continuance) ###
+styletest.c:<= something  ### miss (hit on operator continuance) ###
+styletest.c:&& something  ### miss (hit on operator continuance) ###
+styletest.c:|| something  ### miss (hit on operator continuance) ###
+styletest.c:| something  ### miss (hit on operator continuance) ###
+styletest.c:^ something  ### miss (hit on operator continuance) ###
+styletest.c:<< something  ### miss (hit on operator continuance) ###
+styletest.c:>> something  ### miss (hit on operator continuance) ###
+styletest.c:&something  ### miss (can't check because indistinguishable from address)(hit on operator continuance) ###
+styletest.c:& something  ### miss (hit on operator continuance) ###
+styletest.c:  something (args)  ### hit ###
+
