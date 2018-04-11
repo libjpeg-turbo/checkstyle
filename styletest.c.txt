@@ -247,74 +247,42 @@ styletest.c:(- FIX  /* hit */
 
 ********** DETECTING INCORRECT OPERATOR CONTINUANCE **********
 
-styletest.c:= something  ### miss (hit on operator continuance) ###
-styletest.c:= (something)  ### miss (hit on operator continuance) ###
-styletest.c:+= something  ### miss (hit on operator continuance) ###
-styletest.c:-= something  ### miss (hit on operator continuance) ###
-styletest.c:*= something  ### miss (hit on operator continuance) ###
-styletest.c:&= something  ### miss (hit on operator continuance) ###
-styletest.c:%= something  ### miss (hit on operator continuance) ###
-styletest.c:/= something  ### miss (hit on operator continuance) ###
-styletest.c:|= something  ### miss (hit on operator continuance) ###
-styletest.c:^= something  ### miss (hit on operator continuance) ###
-styletest.c:<<= something  ### miss (hit on operator continuance) ###
-styletest.c:>>= something  ### miss (hit on operator continuance) ###
-styletest.c:+ something  ### miss (hit on operator continuance) ###
-styletest.c:- something  ### miss (hit on operator continuance) ###
-styletest.c:* something  ### miss (hit on operator continuance) ###
-styletest.c:/ something  ### miss (hit on operator continuance) ###
-styletest.c:% something  ### miss (hit on operator continuance) ###
-styletest.c:== something  ### miss (hit on operator continuance) ###
-styletest.c:!= something  ### miss (hit on operator continuance) ###
-styletest.c:> something  ### miss (hit on operator continuance) ###
-styletest.c:< something  ### miss (hit on operator continuance) ###
-styletest.c:>= something  ### miss (hit on operator continuance) ###
-styletest.c:<= something  ### miss (hit on operator continuance) ###
-styletest.c:&& something  ### miss (hit on operator continuance) ###
-styletest.c:|| something  ### miss (hit on operator continuance) ###
-styletest.c:| something  ### miss (hit on operator continuance) ###
-styletest.c:^ something  ### miss (hit on operator continuance) ###
-styletest.c:<< something  ### miss (hit on operator continuance) ###
-styletest.c:>> something  ### miss (hit on operator continuance) ###
-styletest.c:& something  ### miss (hit on operator continuance) ###
+styletest.c:= something  ### miss [hit on operator continuance] ###
+styletest.c:= (something)  ### miss [hit on operator continuance] ###
+styletest.c:+= something  ### miss [hit on operator continuance] ###
+styletest.c:-= something  ### miss [hit on operator continuance] ###
+styletest.c:*= something  ### miss [hit on operator continuance] ###
+styletest.c:&= something  ### miss [hit on operator continuance] ###
+styletest.c:%= something  ### miss [hit on operator continuance] ###
+styletest.c:/= something  ### miss [hit on operator continuance] ###
+styletest.c:|= something  ### miss [hit on operator continuance] ###
+styletest.c:^= something  ### miss [hit on operator continuance] ###
+styletest.c:<<= something  ### miss [hit on operator continuance] ###
+styletest.c:>>= something  ### miss [hit on operator continuance] ###
+styletest.c:+ something  ### miss [hit on operator continuance] ###
+styletest.c:- something  ### miss [hit on operator continuance] ###
+styletest.c:* something  ### miss [hit on operator continuance] ###
+styletest.c:/ something  ### miss [hit on operator continuance] ###
+styletest.c:% something  ### miss [hit on operator continuance] ###
+styletest.c:== something  ### miss [hit on operator continuance] ###
+styletest.c:!= something  ### miss [hit on operator continuance] ###
+styletest.c:> something  ### miss [hit on operator continuance] ###
+styletest.c:< something  ### miss [hit on operator continuance] ###
+styletest.c:>= something  ### miss [hit on operator continuance] ###
+styletest.c:<= something  ### miss [hit on operator continuance] ###
+styletest.c:&& something  ### miss [hit on operator continuance] ###
+styletest.c:|| something  ### miss [hit on operator continuance] ###
+styletest.c:| something  ### miss [hit on operator continuance] ###
+styletest.c:^ something  ### miss [hit on operator continuance] ###
+styletest.c:<< something  ### miss [hit on operator continuance] ###
+styletest.c:>> something  ### miss [hit on operator continuance] ###
+styletest.c:& something  ### miss [hit on operator continuance] ###
 styletest.c:? something  ### hit ###
 styletest.c:: something  ### hit ###
 
 
 ********** DETECTING INCORRECT FUNCTION SPACING **********
 
-styletest.c:= something  ### miss (hit on operator continuance) ###
-styletest.c:= (something)  ### miss (hit on operator continuance) ###
-styletest.c:+= something  ### miss (hit on operator continuance) ###
-styletest.c:-= something  ### miss (hit on operator continuance) ###
-styletest.c:*= something  ### miss (hit on operator continuance) ###
-styletest.c:&= something  ### miss (hit on operator continuance) ###
-styletest.c:%= something  ### miss (hit on operator continuance) ###
-styletest.c:/= something  ### miss (hit on operator continuance) ###
-styletest.c:|= something  ### miss (hit on operator continuance) ###
-styletest.c:^= something  ### miss (hit on operator continuance) ###
-styletest.c:<<= something  ### miss (hit on operator continuance) ###
-styletest.c:>>= something  ### miss (hit on operator continuance) ###
-styletest.c:+ something  ### miss (hit on operator continuance) ###
-styletest.c:-something  ### miss (can't check because indistinguishable from unary -)(hit on operator continuance) ###
-styletest.c:- something  ### miss (hit on operator continuance) ###
-styletest.c:*something  ### miss (can't check because indistinguishable from pointer)(hit on operator continuance) ###
-styletest.c:* something  ### miss (hit on operator continuance) ###
-styletest.c:/ something  ### miss (hit on operator continuance) ###
-styletest.c:% something  ### miss (hit on operator continuance) ###
-styletest.c:== something  ### miss (hit on operator continuance) ###
-styletest.c:!= something  ### miss (hit on operator continuance) ###
-styletest.c:> something  ### miss (hit on operator continuance) ###
-styletest.c:< something  ### miss (hit on operator continuance) ###
-styletest.c:>= something  ### miss (hit on operator continuance) ###
-styletest.c:<= something  ### miss (hit on operator continuance) ###
-styletest.c:&& something  ### miss (hit on operator continuance) ###
-styletest.c:|| something  ### miss (hit on operator continuance) ###
-styletest.c:| something  ### miss (hit on operator continuance) ###
-styletest.c:^ something  ### miss (hit on operator continuance) ###
-styletest.c:<< something  ### miss (hit on operator continuance) ###
-styletest.c:>> something  ### miss (hit on operator continuance) ###
-styletest.c:&something  ### miss (can't check because indistinguishable from address)(hit on operator continuance) ###
-styletest.c:& something  ### miss (hit on operator continuance) ###
 styletest.c:  something (args)  ### hit ###
+
 

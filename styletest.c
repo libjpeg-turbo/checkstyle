@@ -295,95 +295,95 @@ something ? something : something  ### miss ###
 
 /*--------- No space after other operators ---------*/
 =something  ### hit ###
-= something  ### miss (hit on operator continuance) ###
+= something  ### miss [hit on operator continuance] ###
 =(something)  ### hit ###
-= (something)  ### miss (hit on operator continuance) ###
+= (something)  ### miss [hit on operator continuance] ###
 
 +=something  ### hit ###
-+= something  ### miss (hit on operator continuance) ###
++= something  ### miss [hit on operator continuance] ###
 
 -=something  ### hit ###
--= something  ### miss (hit on operator continuance) ###
+-= something  ### miss [hit on operator continuance] ###
 
 *=something  ### hit ###
-*= something  ### miss (hit on operator continuance) ###
+*= something  ### miss [hit on operator continuance] ###
 
 &=something  ### hit ###
-&= something  ### miss (hit on operator continuance) ###
+&= something  ### miss [hit on operator continuance] ###
 
 %=something  ### hit ###
-%= something  ### miss (hit on operator continuance) ###
+%= something  ### miss [hit on operator continuance] ###
 
 /=something  ### hit ###
-/= something  ### miss (hit on operator continuance) ###
+/= something  ### miss [hit on operator continuance] ###
 
 |=something  ### hit ###
-|= something  ### miss (hit on operator continuance) ###
+|= something  ### miss [hit on operator continuance] ###
 
 ^=something  ### hit ###
-^= something  ### miss (hit on operator continuance) ###
+^= something  ### miss [hit on operator continuance] ###
 
 <<=something  ### hit ###
-<<= something  ### miss (hit on operator continuance) ###
+<<= something  ### miss [hit on operator continuance] ###
 
 >>=something  ### hit ###
->>= something  ### miss (hit on operator continuance) ###
+>>= something  ### miss [hit on operator continuance] ###
 
 +something  ### hit ###
 ++something  ### miss ###
-+ something  ### miss (hit on operator continuance) ###
++ something  ### miss [hit on operator continuance] ###
 
--something  ### miss (can't check because indistinguishable from unary -)(hit on operator continuance) ###
+-something  ### miss [can't check because indistinguishable from unary -][hit on operator continuance] ###
 --something  ### miss ###
-- something  ### miss (hit on operator continuance) ###
+- something  ### miss [hit on operator continuance] ###
 
-*something  ### miss (can't check because indistinguishable from pointer)(hit on operator continuance) ###
-* something  ### miss (hit on operator continuance) ###
+*something  ### miss [can't check because indistinguishable from pointer][hit on operator continuance] ###
+* something  ### miss [hit on operator continuance] ###
 
 /something  ### hit ###
-/ something  ### miss (hit on operator continuance) ###
+/ something  ### miss [hit on operator continuance] ###
 
 %something  ### hit ###
-% something  ### miss (hit on operator continuance) ###
+% something  ### miss [hit on operator continuance] ###
 
 ==something  ### hit ###
-== something  ### miss (hit on operator continuance) ###
+== something  ### miss [hit on operator continuance] ###
 
 !=something  ### hit ###
-!= something  ### miss (hit on operator continuance) ###
+!= something  ### miss [hit on operator continuance] ###
 
 >something  ### hit ###
-> something  ### miss (hit on operator continuance) ###
+> something  ### miss [hit on operator continuance] ###
 
 <something  ### hit ###
-< something  ### miss (hit on operator continuance) ###
+< something  ### miss [hit on operator continuance] ###
 
 >=something  ### hit ###
->= something  ### miss (hit on operator continuance) ###
+>= something  ### miss [hit on operator continuance] ###
 
 <=something  ### hit ###
-<= something  ### miss (hit on operator continuance) ###
+<= something  ### miss [hit on operator continuance] ###
 
 &&something  ### hit ###
-&& something  ### miss (hit on operator continuance) ###
+&& something  ### miss [hit on operator continuance] ###
 
 ||something  ### hit ###
-|| something  ### miss (hit on operator continuance) ###
+|| something  ### miss [hit on operator continuance] ###
 
 |something  ### hit ###
-| something  ### miss (hit on operator continuance) ###
+| something  ### miss [hit on operator continuance] ###
 
 ^something  ### hit ###
-^ something  ### miss (hit on operator continuance) ###
+^ something  ### miss [hit on operator continuance] ###
 
 <<something  ### hit ###
-<< something  ### miss (hit on operator continuance) ###
+<< something  ### miss [hit on operator continuance] ###
 
 >>something  ### hit ###
->> something  ### miss (hit on operator continuance) ###
+>> something  ### miss [hit on operator continuance] ###
 
-&something  ### miss (can't check because indistinguishable from address)(hit on operator continuance) ###
-& something  ### miss (hit on operator continuance) ###
+&something  ### miss [can't check because indistinguishable from address][hit on operator continuance] ###
+& something  ### miss [hit on operator continuance] ###
 
 something ?something :something  ### hit ###
 something ? something : something  ### miss ###
