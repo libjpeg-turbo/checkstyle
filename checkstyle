@@ -456,6 +456,9 @@ grep_without_c_comments "$EXPR""$EXCLEXPR" $CJGFILES |
 	filter_quotes
 echo
 
+echo # ************************************************************************
+
+
 if [ "$1" = "-selftest" ]; then
 	popd >/dev/null 2>&1
 fi
