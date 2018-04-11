@@ -406,7 +406,7 @@ something ? something : something  ### miss ###
 ? something  ### hit ###
 something ?  ### miss ###
 : something  ### hit ###
-something ?  ### miss ###
+something :  ### miss ###
 
 
 /********** DETECTING INCORRECT FUNCTION SPACING **********/
