@@ -101,6 +101,7 @@ try {
 something;}  /* hit */
 {something;}  /* hit */
 something; }  /* hit */
+; }  /* hit */
 { something; }  /* miss */
 
 something{  /* hit */
@@ -172,6 +173,8 @@ return ((type)var  ### miss ###
 
 #define macro(a, b) something  /* hit */
 #define macro(a, b)  something  /* miss */
+#define macro() something  /* hit */
+#define macro()  something  /* miss */
 #define macro(a, b) { \  /* miss */
 #define macro(a, b) \  /* miss */
 
@@ -197,98 +200,98 @@ char& something;  ### hit ###
 char &something;  ### miss ###
 
 /*--------- No space before other operators ---------*/
-something=  ### hit ###
-something =  ### miss ###
-(something)=  ### hit ###
-(something) =  ### miss ###
-something[something]=  ### hit ###
-something[something] =  ### miss ###
+### hit ###  something=
+### miss ###  something =
+### hit ###  (something)=
+### miss ###  (something) =
+### hit ###  something[something]=
+### miss ###  something[something] =
 
-something+=  ### hit ###
-something +=  ### miss ###
+### hit ###  something+=
+### miss ###  something +=
 
-something-=  ### hit ###
-something -=  ### miss ###
+### hit ###  something-=
+### miss ###  something -=
 
-something*=  ### hit ###
-something *=  ### miss ###
+### hit ###  something*=
+### miss ###  something *=
 
-something/=  ### hit ###
-something /=  ### miss ###
+### hit ###  something/=
+### miss ###  something /=
 
-something%=  ### hit ###
-something %=  ### miss ###
+### hit ###  something%=
+### miss ###  something %=
 
-something&=  ### hit ###
-something &=  ### miss ###
+### hit ###  something&=
+### miss ###  something &=
 
-something|=  ### hit ###
-something |=  ### miss ###
+### hit ###  something|=
+### miss ###  something |=
 
-something^=  ### hit ###
-something ^=  ### miss ###
+### hit ###  something^=
+### miss ###  something ^=
 
-something<<=  ### hit ###
-something <<=  ### miss ###
+### hit ###  something<<=
+### miss ###  something <<=
 
-something>>=  ### hit ###
-something >>=  ### miss ###
+### hit ###  something>>=
+### miss ###  something >>=
 
-something+  ### hit ###
-something++  ### miss ###
-something +  ### miss ###
+### hit ###  something+
+### miss ###  something++
+### miss ###  something +
 
-something-  ### hit ###
-something--  ### miss ###
-something -  ### miss ###
+### hit ###  something-
+### miss ###  something--
+### miss ###  something -
 
-something*  ### hit ###
-something *  ### miss ###
+### hit ###  something*
+### miss ###  something *
 
-something/  ### hit ###
-something /  ### miss ###
+### hit ###  something/
+### miss ###  something /
 
-something%  ### hit ###
-something %  ### miss ###
+### hit ###  something%
+### miss ###  something %
 
-something==  ### hit ###
-something ==  ### miss ###
+### hit ###  something==
+### miss ###  something ==
 
-something!=  ### hit ###
-something !=  ### miss ###
+### hit ###  something!=
+### miss ###  something !=
 
-something>  ### hit ###
-something >  ### miss ###
+### hit ###  something>
+### miss ###  something >
 
-something<  ### hit ###
-something <  ### miss ###
+### hit ###  something<
+### miss ###  something <
 
-something>=  ### hit ###
-something >=  ### miss ###
+### hit ###  something>=
+### miss ###  something >=
 
-something<=  ### hit ###
-something <=  ### miss ###
+### hit ###  something<=
+### miss ###  something <=
 
-something&&  ### hit ###
-something &&  ### miss ###
+### hit ###  something&&
+### miss ###  something &&
 
-something||  ### hit ###
-something ||  ### miss ###
+### hit ###  something||
+### miss ###  something ||
 
-something&  ### hit ###
-something &  ### miss ###
+### hit ###  something&
+### miss ###  something &
 
-something|  ### hit ###
-something |  ### miss ###
+### hit ###  something|
+### miss ###  something |
 
-something^  ### hit ###
-something ^  ### miss ###
+### hit ###  something^
+### miss ###  something ^
 
-something<<  ### hit ###
-something <<  ### miss ###
+### hit ###  something<<
+### miss ###  something <<
 
-something>>  ### hit ###
-something >>  ### miss ###
+### hit ###  something>>
+### miss ###  something >>
 
 something? something: something  ### hit ###
 something ? something : something  ### miss ###
@@ -404,9 +407,9 @@ something ? something : something  ### miss ###
 
 /********** DETECTING INCORRECT OPERATOR CONTINUANCE **********/
 ? something  ### hit ###
-something ?  ### miss ###
+### miss ###  something ?
 : something  ### hit ###
-something :  ### miss ###
+### miss ###  something :
 
 
 /********** DETECTING INCORRECT FUNCTION SPACING **********/

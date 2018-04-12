@@ -17,7 +17,7 @@ styletest.c:
 
 ---------- General whitespace errors ----------
 
-styletest.c:415: new blank line at EOF.
+styletest.c:418: new blank line at EOF.
 
 
 ********** DETECTING C++-STYLE COMMENTS **********
@@ -63,6 +63,7 @@ styletest.c:{something;}  /* hit */
 ---------- ... something } ----------
 
 styletest.c:something; }  /* hit */
+styletest.c:; }  /* hit */
 
 ---------- something{ ----------
 
@@ -141,6 +142,7 @@ styletest.c:#define macro \
    something;  /* hit */
 styletest.c:#define  macro  something  /* hit */
 styletest.c:#define macro(a, b) something  /* hit */
+styletest.c:#define macro() something  /* hit */
 styletest.c:#define macro something  /* hit */
 
 
@@ -159,48 +161,46 @@ styletest.c:comma ,comma ,down ,doobie ,doo ,down ,down ,comma ,comma  ### hit #
 ---------- Incorrect pointer operator spacing ----------
 
 styletest.c:char* something;  ### hit ###
-styletest.c:something*  ### hit ###
 
 ---------- Incorrect address operator spacing ----------
 
 styletest.c:char& something;  ### hit ###
-styletest.c:something&  ### hit ###
 
 ---------- No space before other operators ----------
 
 styletest.c:char* something;  ### hit ###
 styletest.c:char& something;  ### hit ###
-styletest.c:something=  ### hit ###
-styletest.c:(something)=  ### hit ###
-styletest.c:something[something]=  ### hit ###
-styletest.c:something+=  ### hit ###
-styletest.c:something-=  ### hit ###
-styletest.c:something*=  ### hit ###
-styletest.c:something/=  ### hit ###
-styletest.c:something%=  ### hit ###
-styletest.c:something&=  ### hit ###
-styletest.c:something|=  ### hit ###
-styletest.c:something^=  ### hit ###
-styletest.c:something<<=  ### hit ###
-styletest.c:something>>=  ### hit ###
-styletest.c:something+  ### hit ###
-styletest.c:something-  ### hit ###
-styletest.c:something*  ### hit ###
-styletest.c:something/  ### hit ###
-styletest.c:something%  ### hit ###
-styletest.c:something==  ### hit ###
-styletest.c:something!=  ### hit ###
-styletest.c:something>  ### hit ###
-styletest.c:something<  ### hit ###
-styletest.c:something>=  ### hit ###
-styletest.c:something<=  ### hit ###
-styletest.c:something&&  ### hit ###
-styletest.c:something||  ### hit ###
-styletest.c:something&  ### hit ###
-styletest.c:something|  ### hit ###
-styletest.c:something^  ### hit ###
-styletest.c:something<<  ### hit ###
-styletest.c:something>>  ### hit ###
+styletest.c:### hit ###  something=
+styletest.c:### hit ###  (something)=
+styletest.c:### hit ###  something[something]=
+styletest.c:### hit ###  something+=
+styletest.c:### hit ###  something-=
+styletest.c:### hit ###  something*=
+styletest.c:### hit ###  something/=
+styletest.c:### hit ###  something%=
+styletest.c:### hit ###  something&=
+styletest.c:### hit ###  something|=
+styletest.c:### hit ###  something^=
+styletest.c:### hit ###  something<<=
+styletest.c:### hit ###  something>>=
+styletest.c:### hit ###  something+
+styletest.c:### hit ###  something-
+styletest.c:### hit ###  something*
+styletest.c:### hit ###  something/
+styletest.c:### hit ###  something%
+styletest.c:### hit ###  something==
+styletest.c:### hit ###  something!=
+styletest.c:### hit ###  something>
+styletest.c:### hit ###  something<
+styletest.c:### hit ###  something>=
+styletest.c:### hit ###  something<=
+styletest.c:### hit ###  something&&
+styletest.c:### hit ###  something||
+styletest.c:### hit ###  something&
+styletest.c:### hit ###  something|
+styletest.c:### hit ###  something^
+styletest.c:### hit ###  something<<
+styletest.c:### hit ###  something>>
 styletest.c:something? something: something  ### hit ###
 
 ---------- No space after other operators ----------

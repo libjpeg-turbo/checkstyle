@@ -132,7 +132,7 @@ echo # ************************************************************************
 echo '********** DETECTING UNATTACHED else/catch **********'
 echo
 git ls-files -- $FILES | while read file; do
-	pcregrep -H -M '^[^{]+}\n *(else|catch)' $file
+	pcregrep -H -M '^[^{]*}\n *(else|catch)' $file
 done
 echo
 
@@ -148,8 +148,8 @@ echo
 
 echo '---------- {something ----------'
 echo
-EXPR='{[^ \+\-\}]'
-EXCLEXPR='(?!{@link)'
+EXPR='{[^ \}]'
+EXCLEXPR='(?!{@link)(?!{\+\-})'
 git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' |
 	filter_nasm_comments |
 	filter_loongson_comments
@@ -168,8 +168,9 @@ echo
 
 echo '---------- something} ----------'
 echo
-EXPR='[^ \-\{@]}'
-git grep -P "$EXPR" -- $FILES ':!*.S' ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' |
+EXPR='[^ \{@]}'
+EXCLEXPR='(?<!{\+\-})'
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' |
 	grep -vE '\.java: +\* +.*'"$EXPR" |
 	filter_nasm_comments |
 	filter_loongson_comments
@@ -183,7 +184,7 @@ echo
 
 echo '---------- ... something } ----------'
 echo
-EXPR='^[^{]+[^ ] +}'
+EXPR='^[^{]*[^ ] +}'
 git grep -E "$EXPR" -- $FILES |
 	grep -vE 'simd/.*(\.asm|\.inc):.*;.*}'
 unset EXPR
@@ -202,8 +203,9 @@ echo
 
 echo '---------- }something ----------'
 echo
-EXPR='}[^ ;,\)\.\(\[\<\-]'
-git grep -E "$EXPR" -- $FILES ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!release/' ':!/tj*test*.in'
+EXPR='}[^ ;,\)\.\(\[\<]'
+git grep -E "$EXPR" -- $FILES ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!release/' ':!/tj*test*.in' |
+	filter_nasm_comments
 unset EXPR
 echo
 
@@ -283,7 +285,7 @@ done
 # #define  something
 git grep -E '^[#%]define {2,}' -- $FILES
 # #define something(...) something
-git grep -E '^[#%]define [A-Za-z0-9_]+\([^\(\)]+\) [^ \\{]' -- $FILES
+git grep -E '^[#%]define [A-Za-z0-9_]+\([^\(\)]*\) [^ \\{]' -- $FILES
 # #define something something
 git grep -E '^[#%]define [^\(\) ]+ [^ \\{/]' -- $FILES ':!java/org_libjpegturbo_turbojpeg_TJ.h' ':!release/rpm.spec.in'
 unset EXCLEXPR
@@ -301,15 +303,18 @@ echo
 
 echo '---------- ,something ----------'
 echo
-EXPR=',[^ \"'\''\)]'
-git grep -E "$EXPR" -- $FILES $NCGFILES ':!*CMakeLists.txt' ':!*.1' ':!libjpeg.txt' ':!usage.txt' ':!wizard.txt' ':!release/rpm.spec.in' |
+EXPR=',[^ \)]'
+EXCLEXPR='(?<!\")'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCGFILES ':!*CMakeLists.txt' ':!*.1' ':!libjpeg.txt' ':!usage.txt' ':!wizard.txt' ':!release/rpm.spec.in' |
 	filter_nasm_comments |
 	grep -vE 'simd/.*\.asm:    .*[A-Z]+\([^\(\)]*'"$EXPR"'[^\(\)]*\)'
 # Process C and GAS files separately, so we can filter out the comments
-grep_without_c_comments "$EXPR" $CGFILES |
+EXCLEXPR='(?<!'\'')'
+grep_without_c_comments "$EXCLEXPR""$EXPR" $CGFILES |
 	filter_quotes |
 	grep -vE '^jquant1\.c:  { .*'"$EXPR"'.* }[,]*$'
 unset EXPR
+unset EXCLEXPR
 echo
 
 echo # ************************************************************************
@@ -319,8 +324,8 @@ echo '********** DETECTING INCORRECT OPERATOR SPACING **********'
 
 echo '---------- Incorrect pointer operator spacing ----------'
 echo
-EXPR='[^ /\*}]\* '
-git grep -E "$EXPR" -- $FILES $NCGFILES ':!*.txt' ':!README.ijg' ':!*.cmake' ':!doxygen-extra.css' ':!release/*.in' |
+EXPR='[^ /]\* '
+git grep -E "$EXPR" -- $FILES $NCGFILES ':!*.md' ':!*.txt' ':!README.ijg' ':!*.cmake' ':!doxygen-extra.css' ':!release/*.in' ':!/tj*test*.in' |
 	filter_nasm_comments
 # Process C and GAS files separately, so we can parse out the comments
 grep_without_c_comments "$EXPR" $CGFILES
@@ -329,7 +334,7 @@ echo
 
 echo '---------- Incorrect address operator spacing ----------'
 echo
-git grep -E '[^ \&]\&[ ]' -- $FILES
+git grep -E '[^ \&]\& ' -- $FILES
 echo
 
 # OPERATORS:
@@ -352,13 +357,14 @@ git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 	grep -vE 'simd/.*(\.asm|\.inc\.h|\.inc):%(define|include)'
 
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
-EXPR='[^ ]\b[\)\]]*'"$OP"'[^;]'
-git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!Brewfile' ':!*CMakeLists.txt' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1'  ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!/tj*test*.in'
+EXPR='[^ ]\b[\)\]]*'"$OP"
+EXCLEXPR='(?!_\*;)'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!Brewfile' ':!*CMakeLists.txt' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1'  ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!/tj*test*.in'
 
 # Process C, Java, and GAS files separately, so we can filter out the comments
-OP='(?!\-\>)(?!\+\+)(?!\-\-)(?!\*\*)([=\+\-\*/%&\|\^\!\<\>]*=|[\+\*/%]|\-(?![0-9])|\>+|\<+|&&|(?<!\))&|\|+|\^)'
-EXPR='[^ ]\b[\)\]]*'"$OP"'[^\)\"]'
-EXCLEXPR='(?!8\-bit JSAMPLEs)(?!U\-stack,)'
+OP='(?!\-\>)(?!\+\+)(?!\-\-)(?!\*\*)([=\+\-\*/%&\|\^\!\<\>]*=|[\+/%]|\*(?!\))|\-(?![0-9])|\>+|\<+|&&|&|\|+|\^)'
+EXPR='[^ ]\b[\)\]]*'"$OP"
+EXCLEXPR='(?!8\-bit JSAMPLEs)(?!U\-stack,)(?<!\(j_common_pt)(?<!\(JSAMPRO)'
 grep_without_c_comments "$EXCLEXPR""$EXPR" $CJGFILES |
 	filter_quotes |
 	pcregrep -v 'simd/.*\.S:    .*'"$EXPR" |
