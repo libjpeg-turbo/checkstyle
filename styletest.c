@@ -64,6 +64,12 @@ if (something) {
 }
 else (something_else)  /* hit */
 
+if (something) {
+  something;
+}
+
+else (something_else)  /* hit */
+
 if (something) something;
 else (something_else)  /* miss */
 
@@ -81,6 +87,12 @@ catch (something_else)  /* hit */
 
 try {
   something;
+}
+
+catch (something_else)  /* hit */
+
+try {
+  something;
 } catch (something_else)  /* miss */
 
 
@@ -90,6 +102,9 @@ try {
 #define something2() \
 { \
   something2;  ### hit ###
+
+#define something2() \
+{ something2;  ### hit ### \
 
 #define something2() { \
   something2;  ### miss ###
@@ -131,14 +146,23 @@ do_stuff;  do_other_stuff;  ### miss ###
 
 
 /********** DETECTING INCORRECT FUNCTION/TYPE CAST SPACING **********/
-  (type*)hello  /* hit */
-  (type *)hello  /* miss */
-  (type**)hello  /* hit */
-  (type **)hello  /* miss */
+  (type*)hello  ### hit ###
+  (type *)hello  ### miss ###
+  (type**)hello  ### hit ###
+  (type **)hello  ### miss ###
   (type) var  ### hit ###
   (type)var  ### miss ###
+  (type) "text"  ### hit ###
+  (type)"text"  ### miss ###
+  (type) &var  ### hit ###
+  (type)&var  ### miss [hit on operator spacing] ###
+  *(type) var  ### hit ###
+  *(type)var  ### miss ###
 (type) var  ### hit ###
+if ((type) var == something)  ### hit ###
 (type)var  ### miss ###
+(type *) var  ### hit ###
+(type **) var  ### hit ###
 something + (type) var  ### hit ###
 something + (type)var  ### miss ###
   return (type) var  ### hit ###

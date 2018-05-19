@@ -1,8 +1,11 @@
 
 ********** DETECTING WHITESPACE ERRORS **********
----------- Tab characters ----------
+---------- Stray tab characters ----------
 
 styletest.c:	something;  /* hit */
+
+---------- Spaces used for indentation where they shouldn't be ----------
+
 
 ---------- Alt-Space ----------
 
@@ -17,12 +20,16 @@ styletest.c:
 
 ---------- General whitespace errors ----------
 
-styletest.c:418: new blank line at EOF.
+styletest.c:442: new blank line at EOF.
 
 
-********** DETECTING C++-STYLE COMMENTS **********
+********** DETECTING INCORRECT COMMENT FORMATTING **********
+---------- C++-style comments in C files ----------
 
 styletest.c:// hit
+
+---------- C-style trailing comments in Java files ----------
+
 
 
 ********** DETECTING BAD LINE CONTINUATION SPACING **********
@@ -38,6 +45,14 @@ styletest.c:  something;
 else (something_else)  /* hit */
 styletest.c:  something;
 }
+
+else (something_else)  /* hit */
+styletest.c:  something;
+}
+catch (something_else)  /* hit */
+styletest.c:  something;
+}
+
 catch (something_else)  /* hit */
 
 
@@ -45,14 +60,16 @@ catch (something_else)  /* hit */
 ---------- Function-like macro with unattached bracket ----------
 
 styletest.c:{ \
+styletest.c:{ something2;  ### hit ### \
 
 ---------- {something ----------
 
 styletest.c:{something;  /* hit */
 styletest.c:{something;}  /* hit */
 
----------- { something ... ----------
+---------- { something; ... ----------
 
+styletest.c:{ something2;  ### hit ### \
 styletest.c:{ something;  /* hit */
 
 ---------- something} ----------
@@ -111,22 +128,31 @@ styletest.c:do_stuff; do_other_stuff;  ### hit ###
 ********** DETECTING INCORRECT FUNCTION/TYPE CAST SPACING **********
 ---------- (type*) ----------
 
-styletest.c:  (type*)hello  /* hit */
+styletest.c:  (type*)hello  ### hit ###
 
 ---------- (type**) ----------
 
-styletest.c:  (type**)hello  /* hit */
+styletest.c:  (type**)hello  ### hit ###
 
 ---------- (type) var ----------
 
 styletest.c:  (type) var  ### hit ###
+styletest.c:  (type) "text"  ### hit ###
+styletest.c:  (type) &var  ### hit ###
+styletest.c:  *(type) var  ### hit ###
 styletest.c:(type) var  ### hit ###
+styletest.c:if ((type) var == something)  ### hit ###
 styletest.c:something + (type) var  ### hit ###
 styletest.c:  return (type) var  ### hit ###
 styletest.c:  ((type) var  ### hit ###
 styletest.c:((type) var  ### hit ###
 styletest.c:return ((type) var  ### hit ###
 styletest.c:(type) (var)  ### hit ###
+
+---------- (type *) var ----------
+
+styletest.c:(type *) var  ### hit ###
+styletest.c:(type **) var  ### hit ###
 
 ---------- (*cinfo->something->method)(args) ----------
 
@@ -168,6 +194,8 @@ styletest.c:char& something;  ### hit ###
 
 ---------- No space before other operators ----------
 
+styletest.c:  (type**)hello  ### hit ###
+styletest.c:  (type)&var  ### miss [hit on operator spacing] ###
 styletest.c:char* something;  ### hit ###
 styletest.c:char& something;  ### hit ###
 styletest.c:### hit ###  something=
