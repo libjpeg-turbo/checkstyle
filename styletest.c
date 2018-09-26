@@ -58,7 +58,7 @@
 #define something()  /* miss */ \
 
 
-/********** DETECTING UNATTACHED else/catch **********/
+/********** DETECTING UNATTACHED else/catch/struct **********/
 if (something) {
   something;
 }
@@ -94,6 +94,15 @@ catch (something_else)  /* hit */
 try {
   something;
 } catch (something_else)  /* miss */
+
+typedef struct _mystruct
+{  /* hit */
+  something;
+} mystruct;
+
+typedef struct _mystruct {  /* miss */
+  something;
+} mystruct;
 
 
 /********** DETECTING INCORRECT BRACKET SPACING **********/

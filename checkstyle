@@ -153,11 +153,12 @@ echo
 echo # ************************************************************************
 
 
-echo '********** DETECTING UNATTACHED else/catch **********'
+echo '********** DETECTING UNATTACHED else/catch/struct **********'
 echo
 git ls-files -- $FILES | while read file; do
 	pcregrep -H -M '^[^{]*}\n+ *(else|catch)' $file
 	pcregrep -H -M '[^#]else\n *{' $file
+	pcregrep -H -M '^[^\n\(\/\*]*struct[^\n\)\/\*]*\n[ ]*\{[^\};]*$' $file
 done
 echo
 
