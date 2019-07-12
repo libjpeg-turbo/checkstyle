@@ -1,4 +1,2 @@
 Starting audit...
-[ERROR] /Volumes/Fezzik/Users/drc/src/libjpeg-turbo/java/TJBench.java:708:23: '(' is preceded with whitespace. [MethodParamPad]
 Audit done.
-Checkstyle ends with 1 errors.
