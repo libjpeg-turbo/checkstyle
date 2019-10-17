@@ -2,7 +2,7 @@
 /*
  * Training file for libjpeg-turbo Style Checker
  *
- * Copyright (C)2018 D. R. Commander.  All Rights Reserved.
+ * Copyright (C)2018-2019 D. R. Commander.  All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -215,6 +215,8 @@ return ((type)var  ### miss ###
 #define macro something  /* hit */
 #define macro  something  /* miss */
 
+#if defined(something)  ### miss ###
+#if defined something  ### hit ###
 
 /********** DETECTING INCORRECT COMMA SPACING **********/
 comma,comma,down,doobie,doo,down,down,comma,comma  ### hit ###

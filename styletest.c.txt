@@ -20,7 +20,7 @@ styletest.c:
 
 ---------- General whitespace errors ----------
 
-styletest.c:451: new blank line at EOF.
+styletest.c:453: new blank line at EOF.
 
 
 ********** DETECTING INCORRECT COMMENT FORMATTING **********
@@ -172,6 +172,7 @@ styletest.c:#define  macro  something  /* hit */
 styletest.c:#define macro(a, b) something  /* hit */
 styletest.c:#define macro() something  /* hit */
 styletest.c:#define macro something  /* hit */
+styletest.c:#if defined something  ### hit ###
 
 
 ********** DETECTING INCORRECT COMMA SPACING **********
