@@ -344,7 +344,7 @@ echo '---------- ,something ----------'
 echo
 EXPR=',[^ \)]'
 EXCLEXPR='(?<!\")'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCGFILES ':!*CMakeLists.txt' ':!*.1' ':!libjpeg.txt' ':!usage.txt' ':!wizard.txt' ':!release/rpm.spec.in' |
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCGFILES ':!.travis.yml' ':!*CMakeLists.txt' ':!*.1' ':!libjpeg.txt' ':!usage.txt' ':!wizard.txt' ':!release/rpm.spec.in' |
 	filter_nasm_comments |
 	grep -vE 'simd/.*\.asm:    .*[A-Z]+\([^\(\)]*'"$EXPR"'[^\(\)]*\)'
 # Process C and GAS files separately, so we can filter out the comments
