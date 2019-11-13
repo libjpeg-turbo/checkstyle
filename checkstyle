@@ -337,7 +337,9 @@ echo '********** DETECTING INCORRECT COMMA SPACING **********'
 
 echo '---------- [ ], ----------'
 echo
-git grep -E ' ,' -- $FILES
+EXPR=' ,'
+EXCLEXPR='(?<!,)'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES
 echo
 
 echo '---------- ,something ----------'
@@ -393,7 +395,7 @@ EXCLEXPR='(?!1\-2\.nolist 0xFFFF)(?!U\-stack noalloc)'
 git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 	filter_nasm_comments |
 	pcregrep -v 'simd/.*(\.asm|\.inc):    .*'"$EXPR" |
-	grep -vE 'simd/.*(\.asm|\.inc\.h|\.inc):%(define|include)'
+	grep -vE 'simd/.*(\.asm|\.inc\.h|\.inc):%(define|include|macro)'
 
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"
