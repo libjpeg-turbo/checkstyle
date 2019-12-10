@@ -181,7 +181,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!.travis.yml' ':!BUILDING.md'
 	filter_loongson_comments
 # Process GAS files separately (we only check these because they contain some
 # C code in the comments.)
-EXCLEXPR='(?!{[drq][0-9]+[,-}\[])(?!{v[0-9]+\.[0-9]*[bdhs])(?!{TMP1,)'
+EXCLEXPR='(?!{[drq][0-9]+[,-}\[])(?!{[vYN][0-9]+\.[0-9]*[bdhs])(?!{TMP1,)(?!{ANDMASK\.16b)(?!{ZERO\.8h)'
 git grep -P "$EXCLEXPR""$EXPR" -- '*.S'
 unset EXPR
 unset EXCLEXPR
@@ -204,7 +204,7 @@ git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!.travis.yml' ':!BUILDING.md'
 	filter_loongson_comments
 # Process GAS files separately (we only check these because they contain some
 # C code in the comments.)
-EXCLEXPR='(?<![drq][0-9]})(?<![dq][0-9][0-9]})(?<!v[0-9]\.[bh]})(?<!v[0-9][0-9]\.[bdhs]})(?<!v[0-9]\.[0-9][bh]})(?<!v[0-9][0-9]\.[0-9][hb]})(?<!v[0-9][0-9]\.[0-9][0-9]b})(?<!d[0-9][0-9]\[[0-9]\]})(?<!{d[0-9]\[[0-9]\]})(?<!v[0-9]\.[0-9][0-9]b})(?<!TMP[0-9]})(?<!lr})(?<!pc})'
+EXCLEXPR='(?<![drq][0-9]})(?<![dq][0-9][0-9]})(?<![vY][0-9]\.[bh]})(?<!v[0-9][0-9]\.[bdhs]})(?<![vNY][0-9]\.[0-9][bh]})(?<!v[0-9][0-9]\.[0-9][hb]})(?<!v[0-9][0-9]\.[0-9][0-9]b})(?<!d[0-9][0-9]\[[0-9]\]})(?<!{d[0-9]\[[0-9]\]})(?<!v[0-9]\.[0-9][0-9]b})(?<!TMP[0-9]})(?<!ANDMASK\.16b})(?<!ZERO\.8h})(?<!lr})(?<!pc})'
 git grep -P "$EXPR""$EXCLEXPR" -- '*.S'
 unset EXPR
 unset EXCLEXPR
