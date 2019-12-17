@@ -62,7 +62,7 @@ filter_nasm_comments()
 
 filter_loongson_comments()
 {
-	grep -vE 'simd/loongson/.*\.c:.*/\*.*'"$EXPR"'.*\*/$'
+	grep -vE 'simd/mips64/.*-mmi\.c:.*/\*.*'"$EXPR"'.*\*/$'
 }
 
 filter_quotes()
@@ -484,7 +484,8 @@ git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.md' ':!*.yml' ':!change.log' ':!/*
 EXCLEXPR='(?!\|\| cinfo\-\>in_color_space == JCS_RGB)(?!\&\& cinfo->out_color_space \!= JCS_RGB)'
 EXPR='^ *'"$EXCLEXPR""$OP"' +'
 grep_without_c_comments "$EXPR" $CJGFILES |
-	grep -vE 'simd/loongson/.*: +:'
+	grep -vE 'simd/mips64/.*-mmi\.c: +:' |
+	grep -vE 'simd/mips64/loongson-mmintrin\.h: +:'
 unset EXPR
 echo
 
