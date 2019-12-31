@@ -414,7 +414,7 @@ grep_without_c_comments "$EXCLEXPR""$EXPR" $CJGFILES |
 # Process ternary conditional operators separately, so we can filter out
 # cases and labels.
 EXPR='[^ ]\b[\)\]]*[?:]'
-EXCLEXPR='(?! *case.*\:)(?! *default\:)(?! *bailout\:)'
+EXCLEXPR='(?! *case.*\:)(?! *default\:)(?! *bailout\:)(?<!\:lo1)'
 grep_without_c_comments "$EXCLEXPR""$EXPR" $CJGFILES |
 	filter_quotes |
 	grep -vE '(\.c|\.java|\.S|\.h):[ ]*[A-Za-z0-9_\\\(\)]+:' |
