@@ -34,7 +34,7 @@ SCRIPTDIR=`dirname $0`
 set -f
 
 # Move along.  Nothing to format here.
-FILES='./* :!.gitattributes :!ci/ :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.bmp :!*.icc :!*.rtf :!simd/nasm/jsimdcfg.inc'
+FILES='./* :!.gitattributes :!ci/ :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.bmp :!*.icc :!*.rtf :!*.rtf.in :!simd/nasm/jsimdcfg.inc'
 
 # Files that use tabs for indentation
 TIFILES='doxygen-extra.css release/Distribution.xml.in release/installer.nsi.in release/make*.in release/uninstall.in tj*.in'
