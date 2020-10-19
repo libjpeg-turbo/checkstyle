@@ -212,7 +212,7 @@ echo
 
 echo '---------- ... something } ----------'
 echo
-EXPR='^[^{]*[^ ] +}'
+EXPR='^[^{]*[^ \}] +}'
 git grep -E "$EXPR" -- $FILES |
 	grep -vE 'simd/.*\.asm:.*;.*}'
 unset EXPR
