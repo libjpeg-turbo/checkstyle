@@ -175,7 +175,7 @@ echo
 echo '---------- {something ----------'
 echo
 EXPR='{[^ \}]'
-EXCLEXPR='(?!{@link)(?!{\+\-})'
+EXCLEXPR='(?!{@link)(?!{\+\-})(?!{fr}\])'
 git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
 	filter_nasm_comments |
 	filter_loongson_comments
@@ -197,7 +197,7 @@ echo
 echo '---------- something} ----------'
 echo
 EXPR='[^ \{@]}'
-EXCLEXPR='(?<!{\+\-})'
+EXCLEXPR='(?<!{\+\-})(?<!\[{fr})'
 git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
 	grep -vE '\.java: +\* +.*'"$EXPR" |
 	filter_nasm_comments |
@@ -221,7 +221,7 @@ echo
 echo '---------- something{ ----------'
 echo
 EXPR='[^ @]{'
-EXCLEXPR='(?!\.{@link)(?![\]\>]{\+\-})'
+EXCLEXPR='(?!\.{@link)(?![\]\>]{\+\-})(?!\[{fr}\])'
 git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
 	filter_nasm_comments |
 	filter_loongson_comments
@@ -231,8 +231,8 @@ echo
 
 echo '---------- }something ----------'
 echo
-EXPR='}[^ ;,\)\.\(\[\<]'
-git grep -E "$EXPR" -- $FILES ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!release/' ':!tj*test*.in' ':!croptest.in' |
+EXPR='}[^ ;,\)\.\(\[\<\]]'
+git grep -P "$EXPR" -- $FILES ':!.travis.yml' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!release/' ':!tj*test*.in' ':!croptest.in' |
 	filter_nasm_comments
 unset EXPR
 echo
