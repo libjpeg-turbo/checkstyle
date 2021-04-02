@@ -37,12 +37,12 @@ set -f
 FILES='./* :!.gitattributes :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.bmp :!*.icc :!*.rtf :!*.rtf.in :!simd/nasm/jsimdcfg.inc :!win/gcc :!win/vc :!win/*.cmake.in'
 
 # Files that use tabs for indentation
-TIFILES='doxygen-extra.css release/Distribution.xml.in release/installer.nsi.in release/make*.in release/rpm.spec.in release/uninstall.in tj*.in croptest.in'
+TIFILES='doxygen-extra.css fuzz/build.sh release/Distribution.xml.in release/installer.nsi.in release/make*.in release/rpm.spec.in release/uninstall.in tj*.in croptest.in'
 NTIFILES=$(for i in $TIFILES; do echo :!$i; done)
 
 # C, Java, and GAS files
-CGFILES='*.c *.h *.h.in example.txt *.S :!*.inc.h'
-NCGFILES=':!*.c :!*.h :!*.h.in :!example.txt :!*.S *.inc.h'
+CGFILES='*.c *.cc *.h *.h.in example.txt *.S :!*.inc.h'
+NCGFILES=':!*.c :!*.cc :!*.h :!*.h.in :!example.txt :!*.S *.inc.h'
 CJGFILES="$CGFILES"' *.java *.java.in :!tjbenchtest.java.in :!tjexampletest.java.in'
 NCJGFILES="$NCGFILES"' :!*.java :!*.java.in'
 
@@ -406,7 +406,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"
 EXCLEXPR='(?!_\*;)'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!tj*test*.in' ':!croptest.in'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!tj*test*.in' ':!croptest.in' ':!fuzz/build.sh'
 
 # Process C, Java, and GAS files separately, so we can filter out the comments
 OP='(?!\-\>)(?!\+\+)(?!\-\-)([=\+\-\*/%&\|\^\!\<\>]*=|[\+/%]|\*(?!\))|\-(?![0-9])|\>+|\<+|&&|&|\|+|\^)'
@@ -423,7 +423,7 @@ EXCLEXPR='(?<!\:lo1)'
 grep_without_c_comments "$EXCLEXPR""$EXPR" $CJGFILES |
 	filter_quotes |
 	grep -vE '(\.c|\.java|\.S|\.h):[ ]*[A-Za-z0-9_\\\(\)]+:' |
-	grep -vE '(\.c|\.java|\.h): *(case|default|bailout).*:'
+	grep -vE '(\.c|\.cc|\.java|\.h): *(case|default|bailout).*:'
 
 unset EXPR
 unset EXCLEXPR
@@ -441,7 +441,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR="$OP"'[\(]*\b[^ ]'
-git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!tj*test*.in' ':!croptest.in'
+git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!tj*test*.in' ':!croptest.in' ':!fuzz/build.sh'
 
 # NOTE: We can't check for *something or &something effectively, because
 # there's no way to distinguish those errors from valid pointer/address
