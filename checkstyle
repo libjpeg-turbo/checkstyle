@@ -3,7 +3,7 @@
 # libjpeg-turbo Style Checker, or
 # How I Learned to Stop Worrying and Love Regular Expressions
 #
-# Copyright (C)2018-2021 D. R. Commander.  All Rights Reserved.
+# Copyright (C)2018-2022 D. R. Commander.  All Rights Reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -352,7 +352,7 @@ echo '---------- ,something ----------'
 echo
 EXPR=',[^ \)]'
 EXCLEXPR='(?<!\")'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCGFILES ':!.github/workflows' ':!*CMakeLists.txt' ':!*.1' ':!libjpeg.txt' ':!usage.txt' ':!wizard.txt' ':!release/rpm.spec.in' |
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCGFILES ':!.github/workflows' ':!*CMakeLists.txt' ':!*.1' ':!libjpeg.txt' ':!usage.txt' ':!wizard.txt' ':!release/rpm.spec.in' ':!win/*.rc.in' |
 	filter_nasm_comments |
 	grep -vE 'simd/.*\.asm:    .*[A-Z]+\([^\(\)]*'"$EXPR"'[^\(\)]*\)'
 # Process C and GAS files separately, so we can filter out the comments
@@ -406,7 +406,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"
 EXCLEXPR='(?!_\*;)'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!tj*test*.in' ':!croptest.in' ':!fuzz/build.sh'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!tj*test*.in' ':!croptest.in' ':!fuzz/build.sh' ':!win/*.rc.in'
 
 # Process C, Java, and GAS files separately, so we can filter out the comments
 OP='(?!\-\>)(?!\+\+)(?!\-\-)([=\+\-\*/%&\|\^\!\<\>]*=|[\+/%]|\*(?!\))|\-(?![0-9])|\>+|\<+|&&|&|\|+|\^)'
@@ -441,7 +441,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR="$OP"'[\(]*\b[^ ]'
-git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!tj*test*.in' ':!croptest.in' ':!fuzz/build.sh'
+git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!tj*test*.in' ':!croptest.in' ':!fuzz/build.sh' ':!win/*.rc.in'
 
 # NOTE: We can't check for *something or &something effectively, because
 # there's no way to distinguish those errors from valid pointer/address
