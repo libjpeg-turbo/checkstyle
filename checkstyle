@@ -307,7 +307,7 @@ echo
 
 echo '---------- (type *) var ----------'
 echo
-git grep -E '\*\) [A-Za-z0-9_\(]' -- $FILES ':!*.md' |
+git grep -P '(?<!\ sizeof\(void\ )\*\) [A-Za-z0-9_\(]' -- $FILES ':!*.md' |
 	grep -vE ':EXTERN\([A-Za-z0-9_ ]+ \*\) '
 echo
 
