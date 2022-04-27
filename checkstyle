@@ -176,7 +176,7 @@ echo '---------- {something ----------'
 echo
 EXPR='{[^ \}]'
 EXCLEXPR='(?!{@link)(?!{\+\-})(?!{fr}\])'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
 	filter_nasm_comments |
 	filter_loongson_comments
 # Process GAS files separately (we only check these because they contain some
@@ -198,7 +198,7 @@ echo '---------- something} ----------'
 echo
 EXPR='[^ \{@]}'
 EXCLEXPR='(?<!{\+\-})(?<!\[{fr})'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
 	grep -vE '\.java: +\* +.*'"$EXPR" |
 	filter_nasm_comments |
 	filter_loongson_comments
@@ -222,7 +222,7 @@ echo '---------- something{ ----------'
 echo
 EXPR='[^ @]{'
 EXCLEXPR='(?!\.{@link)(?![\]\>]{\+\-})(?!\[{fr}\])'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
 	filter_nasm_comments |
 	filter_loongson_comments
 unset EXPR
@@ -232,7 +232,7 @@ echo
 echo '---------- }something ----------'
 echo
 EXPR='}[^ ;,\)\.\(\[\<\]]'
-git grep -P "$EXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!release/' ':!tj*test*.in' ':!croptest.in' |
+git grep -P "$EXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!fuzz/build.sh' ':!release/' ':!tj*test*.in' ':!croptest.in' |
 	filter_nasm_comments
 unset EXPR
 echo
@@ -267,7 +267,7 @@ echo '---------- Semicolon spacing in one-liners ----------'
 echo
 EXPR='; [^ }/\\]'
 EXCLEXPR='(?! *for \()(?!.*; \)$)(?!.*\) {)'
-grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!*.1' ':!/*.txt' ':!release/*.in' ':!*.asm' ':!*.inc' ':!*.inc.h' ':!tj*test*.in' ':!croptest.in' |
+grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!fuzz/build.sh' ':!*.1' ':!/*.txt' ':!release/*.in' ':!*.asm' ':!*.inc' ':!*.inc.h' ':!tj*test*.in' ':!croptest.in' |
 	filter_quotes
 unset EXPR
 unset EXCLEXPR
@@ -307,7 +307,7 @@ echo
 
 echo '---------- (type *) var ----------'
 echo
-git grep -E '\*\) [A-Za-z0-9_\(]' -- $FILES ':!*.md' |
+git grep -P '(?<!\ sizeof\(void\ )\*\) [A-Za-z0-9_\(]' -- $FILES ':!*.md' |
 	grep -vE ':EXTERN\([A-Za-z0-9_ ]+ \*\) '
 echo
 
