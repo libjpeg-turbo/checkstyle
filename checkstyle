@@ -411,7 +411,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc
 # Process C, Java, and GAS files separately, so we can filter out the comments
 OP='(?!\-\>)(?!\+\+)(?!\-\-)([=\+\-\*/%&\|\^\!\<\>]*=|[\+/%]|\*(?!\))|\-(?![0-9])|\>+|\<+|&&|&|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"
-EXCLEXPR='(?!8\-bit JSAMPLEs)(?!U\-stack,)(?<!\(j_common_pt)(?<!\(j12_common_pt)(?<!\(JSAMPRO)'
+EXCLEXPR='(?!8\-bit JSAMPLEs)(?!U\-stack,)(?<!\(j_common_pt)(?<!\(JSAMPRO)'
 grep_without_c_comments "$EXCLEXPR""$EXPR" $CJGFILES |
 	filter_quotes |
 	pcregrep -v ':#include \<.*\>'
