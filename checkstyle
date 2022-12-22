@@ -53,6 +53,11 @@ if [ "$1" = "-selftest" ]; then
 	CGFILES="styletest.c"
 	CJGFILES="styletest.c"
 	TIFILES=
+elif [ $# -gt 0 ]; then
+	FILES=${1+"$@"}
+	CGFILES=${1+"$@"}
+	CJGFILES=${1+"$@"}
+	TIFILES=
 fi
 
 filter_nasm_comments()
