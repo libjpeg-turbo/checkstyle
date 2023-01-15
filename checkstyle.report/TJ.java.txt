@@ -1,4 +1,4 @@
 Starting audit...
-[ERROR] /Users/drc/src/libjpeg-turbo/java/org/libjpegturbo/turbojpeg/TJ.java:436: Line is longer than 79 characters (found 127). [LineLength]
+[ERROR] /Users/drc/src/libjpeg-turbo/java/org/libjpegturbo/turbojpeg/TJ.java:437: Line is longer than 79 characters (found 127). [LineLength]
 Audit done.
 Checkstyle ends with 1 errors.
