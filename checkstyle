@@ -144,7 +144,7 @@ echo
 
 echo '---------- C-style trailing comments in Java files ----------'
 echo
-git grep -E '[^ ] +\/\*' -- java
+git grep -E '[^ ] +\/\*' -- java ':!java/doc'
 echo
 
 echo # ************************************************************************
@@ -378,9 +378,11 @@ echo '---------- Incorrect pointer operator spacing ----------'
 echo
 EXPR='[^ /]\* '
 git grep -E "$EXPR" -- $FILES $NCGFILES ':!*.md' ':!*.txt' ':!README.ijg' ':!*.cmake' ':!release/makemacpkg.in' ':!tj*test*.in' ':!croptest.in' |
+	filter_quotes |
 	filter_nasm_comments
 # Process C and GAS files separately, so we can parse out the comments
-grep_without_c_comments "$EXPR" $CGFILES
+grep_without_c_comments "$EXPR" $CGFILES |
+	filter_quotes
 unset EXPR
 echo
 
@@ -416,7 +418,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc
 # Process C, Java, and GAS files separately, so we can filter out the comments
 OP='(?!\-\>)(?!\+\+)(?!\-\-)([=\+\-\*/%&\|\^\!\<\>]*=|[\+/%]|\*(?!\))|\-(?![0-9])|\>+|\<+|&&|&|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"
-EXCLEXPR='(?!8\-bit JSAMPLEs)(?!U\-stack,)(?<!\(j_common_pt)(?<!\(JSAMPRO)'
+EXCLEXPR='(?!8\-bit JSAMPLEs)(?!U\-stack,)(?<!\(j_common_pt)(?<!\(JSAMPRO)(?<!\(_JSAMPRO)'
 grep_without_c_comments "$EXCLEXPR""$EXPR" $CJGFILES |
 	filter_quotes |
 	pcregrep -v ':#include \<.*\>'
