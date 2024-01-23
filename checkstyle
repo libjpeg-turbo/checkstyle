@@ -37,7 +37,7 @@ set -f
 FILES='./* :!.gitattributes :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.bmp :!*.icc :!*.rtf :!*.rtf.in :!simd/nasm/jsimdcfg.inc :!win/gcc :!win/vc :!win/*.cmake.in'
 
 # Files that use tabs for indentation
-TIFILES='doxygen-extra.css fuzz/build.sh release/Distribution.xml.in release/installer.nsi.in release/make*.in release/rpm.spec.in release/uninstall.in tj*.in croptest.in'
+TIFILES='doc/doxygen-extra.css fuzz/build.sh release/Distribution.xml.in release/installer.nsi.in release/make*.in release/rpm.spec.in release/uninstall.in tj*.in croptest.in'
 NTIFILES=$(for i in $TIFILES; do echo :!$i; done)
 
 # C, Java, and GAS files
@@ -364,7 +364,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCGFILES ':!.github/workflows' ':!*CMa
 EXCLEXPR='(?<!'\'')'
 grep_without_c_comments "$EXCLEXPR""$EXPR" $CGFILES |
 	filter_quotes |
-	grep -vE '^jquant1\.c:  { .*'"$EXPR"'.* }[,]*$'
+	grep -vE '^src\/jquant1\.c:  { .*'"$EXPR"'.* }[,]*$'
 unset EXPR
 unset EXCLEXPR
 echo
@@ -405,7 +405,7 @@ echo
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/]|\>+|\<+|&+|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"
 EXCLEXPR='(?!1\-2\.nolist 0xFFFF)(?!U\-stack noalloc)'
-git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
+git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' |
 	filter_nasm_comments |
 	pcregrep -v 'simd/.*(\.asm|\.inc):    .*'"$EXPR" |
 	grep -vE 'simd/.*(\.asm|\.inc\.h|\.inc):%(define|include|macro)'
