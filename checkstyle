@@ -404,7 +404,7 @@ echo '---------- No space before other operators ----------'
 echo
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/]|\>+|\<+|&+|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"
-EXCLEXPR='(?!1\-2\.nolist 0xFFFF)(?!U\-stack noalloc)'
+EXCLEXPR='(?!1\-2\.nolist 0xFFFF)(?<!\.note\.gnu\.property note alloc noexec alig)(?!U\-stack noalloc)'
 git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 	filter_nasm_comments |
 	pcregrep -v 'simd/.*(\.asm|\.inc):    .*'"$EXPR" |
@@ -440,7 +440,7 @@ echo '---------- No space after other operators ----------'
 echo
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/]|\>+|\<+|&+|\|+|\^)'
 EXPR="$OP"'[\(]*\b[^ ]'
-EXCLEXPR='(?!-F_[0-9]_[0-9]{3})(?!-[0-9\.]+$)(?!-2\.nolist 0xFFFF)(?!-stack noalloc)'
+EXCLEXPR='(?!-F_[0-9]_[0-9]{3})(?!-[0-9\.]+$)(?!-2\.nolist 0xFFFF)(?<!\.note\.gnu\.property note alloc noexec align)(?!-stack noalloc)'
 git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 	filter_nasm_comments |
 	pcregrep -v 'simd/.*(\.asm|\.inc):    .*'"$EXPR" |
