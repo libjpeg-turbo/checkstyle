@@ -37,7 +37,7 @@ set -f
 FILES='./* :!.gitattributes :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.bmp :!*.icc :!*.rtf :!*.rtf.in :!simd/nasm/jsimdcfg.inc :!win/gcc :!win/vc :!win/*.cmake.in'
 
 # Files that use tabs for indentation
-TIFILES='doc/doxygen-extra.css fuzz/build.sh release/Distribution.xml.in release/installer.nsi.in release/make*.in release/rpm.spec.in release/uninstall.in tj*.in croptest.in'
+TIFILES='doc/doxygen-extra.css fuzz/build.sh release/Distribution.xml.in release/installer.nsi.in release/make*.in release/rpm.spec.in release/uninstall.in test/tj*.in test/croptest.in'
 NTIFILES=$(for i in $TIFILES; do echo :!$i; done)
 
 # C, Java, and GAS files
@@ -139,7 +139,7 @@ echo '********** DETECTING INCORRECT COMMENT FORMATTING **********'
 
 echo '---------- C++-style comments in C files ----------'
 echo
-git grep -P '(?<!http:)(?<!https:)(?<!ftp:)//' -- $FILES ':!.github/workflows' ':!*.java' ':!release/makesrpm.in' ':!tj*test*.in'
+git grep -P '(?<!http:)(?<!https:)(?<!ftp:)//' -- $FILES ':!.github/workflows' ':!*.java' ':!release/makesrpm.in' ':!test/tj*test*.in'
 echo
 
 echo '---------- C-style trailing comments in Java files ----------'
@@ -181,7 +181,7 @@ echo '---------- {something ----------'
 echo
 EXPR='{[^ \}]'
 EXCLEXPR='(?!{@link)(?!{\+\-})(?!{fr}\])'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
 	filter_quotes |
 	filter_nasm_comments |
 	filter_loongson_comments
@@ -204,7 +204,7 @@ echo '---------- something} ----------'
 echo
 EXPR='[^ \{@]}'
 EXCLEXPR='(?<!{\+\-})(?<!\[{fr})'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
 	grep -vE '\.java: +\* +.*'"$EXPR" |
 	filter_quotes |
 	filter_nasm_comments |
@@ -229,7 +229,7 @@ echo '---------- something{ ----------'
 echo
 EXPR='[^ @]{'
 EXCLEXPR='(?![\.(>]{@link)(?![\]\>]{\+\-})(?!\[{fr}\])'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!tj*test*.in' ':!croptest.in' |
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
 	filter_nasm_comments |
 	filter_loongson_comments
 unset EXPR
@@ -239,7 +239,7 @@ echo
 echo '---------- }something ----------'
 echo
 EXPR='}[^ ;,\)\.\(\[\<\]]'
-git grep -P "$EXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!release/' ':!tj*test*.in' ':!croptest.in' |
+git grep -P "$EXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
 	filter_quotes |
 	filter_nasm_comments
 unset EXPR
@@ -275,7 +275,7 @@ echo '---------- Semicolon spacing in one-liners ----------'
 echo
 EXPR='; [^ }/\\]'
 EXCLEXPR='(?! *for \()(?!.*; \)$)(?!.*\) {)'
-grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!fuzz/build.sh' ':!*.1' ':!/*.txt' ':!release/*.in' ':!*.asm' ':!*.inc' ':!*.inc.h' ':!tj*test*.in' ':!croptest.in' |
+grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!fuzz/build.sh' ':!*.1' ':!/*.txt' ':!release/*.in' ':!*.asm' ':!*.inc' ':!*.inc.h' ':!test/tj*test*.in' ':!test/croptest.in' |
 	filter_quotes
 unset EXPR
 unset EXCLEXPR
@@ -303,7 +303,7 @@ echo '---------- (type) var ----------'
 echo
 EXPR='(^| |\(|\*)\([^\)\(\> \*]*\) [A-Za-z0-9_\(\"\&][^ \&]'
 EXCLEXPR='(?<!\(sym\) wr)'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!/*.txt' ':!*.1' ':!java/README' ':!tj*test*.in' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!/*.txt' ':!*.1' ':!java/README' ':!test/tj*test*.in' |
 	filter_nasm_comments
 # Process C, Java, and GAS files separately, so we can filter out the comments
 EXCLEXPR='(?<!if)'
@@ -380,7 +380,7 @@ echo '********** DETECTING INCORRECT OPERATOR SPACING **********'
 echo '---------- Incorrect pointer operator spacing ----------'
 echo
 EXPR='[^ /]\* '
-git grep -E "$EXPR" -- $FILES $NCGFILES ':!*.md' ':!*.txt' ':!README.ijg' ':!*.cmake' ':!release/makemacpkg.in' ':!tj*test*.in' ':!croptest.in' |
+git grep -E "$EXPR" -- $FILES $NCGFILES ':!*.md' ':!*.txt' ':!README.ijg' ':!*.cmake' ':!release/makemacpkg.in' ':!test/tj*test*.in' ':!test/croptest.in' |
 	filter_quotes |
 	filter_nasm_comments
 # Process C and GAS files separately, so we can parse out the comments
@@ -416,7 +416,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' |
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"
 EXCLEXPR='(?!_\*;)'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!tj*test*.in' ':!croptest.in' ':!fuzz/build.sh' ':!win/*.rc.in'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!test/tj*test*.in' ':!test/croptest.in' ':!fuzz/build.sh' ':!win/*.rc.in'
 
 # Process C, Java, and GAS files separately, so we can filter out the comments
 OP='(?!\-\>)(?!\+\+)(?!\-\-)([=\+\-\*/%&\|\^\!\<\>]*=|[\+/%]|\*(?!\))|\-(?![0-9])|\>+|\<+|&&|&|\|+|\^)'
@@ -451,7 +451,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR="$OP"'[\(]*\b[^ ]'
-git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!tj*test*.in' ':!croptest.in' ':!fuzz/build.sh' ':!win/*.rc.in'
+git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!doxygen.config' ':!java/MANIFEST.MF' ':!java/README' ':!release/*.in' ':!test/tj*test*.in' ':!test/croptest.in' ':!fuzz/build.sh' ':!win/*.rc.in'
 
 # NOTE: We can't check for *something or &something effectively, because
 # there's no way to distinguish those errors from valid pointer/address
@@ -509,7 +509,7 @@ echo '********** DETECTING INCORRECT FUNCTION SPACING **********'
 echo
 EXPR='\b \([^\*]'
 EXCLEXPR='(?<!byte \(.)(?<!equ \(.)(?<!dd \(.)'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!README.ijg' ':!appveyor.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!java/README' ':!release/*.in' ':!croptest.in' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!README.ijg' ':!appveyor.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!java/README' ':!release/*.in' ':!test/croptest.in' |
 	filter_nasm_comments
 # Process C and GAS files separately, so we can parse out the comments
 EXCLEXPR='(?<!if \(.)(?<!return \(.)(?<!for \(.)(?<!while \(.)(?<!switch \(.)(?<!else \(.)(?<!\.short \(.)(?<!catch \(.)(?<!do \(.)'
