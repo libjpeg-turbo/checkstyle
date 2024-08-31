@@ -43,7 +43,7 @@ NTIFILES=$(for i in $TIFILES; do echo :!$i; done)
 # C, Java, and GAS files
 CGFILES='*.c *.cc *.h *.h.in example.txt *.S :!*.inc.h'
 NCGFILES=':!*.c :!*.cc :!*.h :!*.h.in :!example.txt :!*.S *.inc.h'
-CJGFILES="$CGFILES"' *.java *.java.in :!tjbenchtest.java.in :!tjexampletest.java.in'
+CJGFILES="$CGFILES"' *.java *.java.in'
 NCJGFILES="$NCGFILES"' :!*.java :!*.java.in'
 
 if [ "$1" = "-selftest" ]; then
