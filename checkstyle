@@ -366,8 +366,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCGFILES ':!.github/workflows' ':!*CMa
 # Process C and GAS files separately, so we can filter out the comments
 EXCLEXPR='(?<!'\'')'
 grep_without_c_comments "$EXCLEXPR""$EXPR" $CGFILES |
-	filter_quotes |
-	grep -vE '^src\/jquant1\.c:  { .*'"$EXPR"'.* }[,]*$'
+	filter_quotes
 unset EXPR
 unset EXCLEXPR
 echo
