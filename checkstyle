@@ -34,7 +34,7 @@ SCRIPTDIR=`dirname $0`
 set -f
 
 # Move along.  Nothing to format here.
-FILES='./* :!.gitattributes :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.bmp :!*.icc :!*.rtf :!*.rtf.in :!simd/nasm/jsimdcfg.inc :!win/gcc :!win/vc :!win/*.cmake.in'
+FILES='./* :!.gitattributes :!doc/ :!java/doc/ :!simd/gas-preprocessor.in :!*.jpg :!*.ppm :!*.pgm :!*.bmp :!*.icc :!*.rtf :!*.rtf.in :!simd/nasm/jsimdcfg.inc :!win/gcc :!win/vc :!win/*.cmake.in'
 
 # Files that use tabs for indentation
 TIFILES='doc/doxygen-extra.css fuzz/build.sh release/Distribution.xml.in release/installer.nsi.in release/make*.in release/rpm.spec.in release/uninstall.in test/tj*.in test/croptest.in'
@@ -238,7 +238,7 @@ echo
 
 echo '---------- }something ----------'
 echo
-EXPR='}[^ ;,\)\.\(\[\<\]]'
+EXPR='}[^ ;,\)\.\(\[\<\]\"]'
 git grep -P "$EXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
 	filter_quotes |
 	filter_nasm_comments
@@ -358,8 +358,8 @@ echo
 
 echo '---------- ,something ----------'
 echo
-EXPR=',[^ \)]'
-EXCLEXPR='(?<!\")'
+EXPR=',[^ \)\$\"]'
+EXCLEXPR='(?<![\"\[])'
 git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCGFILES ':!.github/workflows' ':!*CMakeLists.txt' ':!*.1' ':!libjpeg.txt' ':!usage.txt' ':!wizard.txt' ':!release/rpm.spec.in' ':!win/*.rc.in' |
 	filter_nasm_comments |
 	grep -vE 'simd/.*\.asm:    .*[A-Z]+\([^\(\)]*'"$EXPR"'[^\(\)]*\)'
