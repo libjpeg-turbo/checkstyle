@@ -3,7 +3,7 @@
 # libjpeg-turbo Style Checker, or
 # How I Learned to Stop Worrying and Love Regular Expressions
 #
-# Copyright (C)2018-2024 D. R. Commander.  All Rights Reserved.
+# Copyright (C)2018-2025 D. R. Commander.  All Rights Reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -272,7 +272,7 @@ echo '---------- Semicolon spacing in one-liners ----------'
 echo
 EXPR='; [^ }/\\]'
 EXCLEXPR='(?! *for \()(?!.*; \)$)(?!.*\) {)'
-grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!fuzz/build.sh' ':!*.1' ':!/*.txt' ':!release/*.in' ':!*.asm' ':!*.inc' ':!*.inc.h' ':!tj*test*.in' ':!croptest.in' |
+grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!*.md' ':!*.yml' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!fuzz/build.sh' ':!*.1' ':!/*.txt' ':!release/*.in' ':!*.asm' ':!*.inc' ':!*.inc.h' ':!tj*test*.in' ':!croptest.in' |
 	filter_quotes
 unset EXPR
 unset EXCLEXPR
@@ -505,7 +505,7 @@ echo '********** DETECTING INCORRECT FUNCTION SPACING **********'
 echo
 EXPR='\b \([^\*]'
 EXCLEXPR='(?<!byte \(.)(?<!equ \(.)(?<!dd \(.)'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!README.ijg' ':!appveyor.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!java/README' ':!release/*.in' ':!croptest.in' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!README.ijg' ':!*.yml' ':!change.log' ':!*.1' ':!cmakescripts/' ':!/*.txt' ':!java/README' ':!release/*.in' ':!croptest.in' |
 	filter_nasm_comments
 # Process C and GAS files separately, so we can parse out the comments
 EXCLEXPR='(?<!if \(.)(?<!return \(.)(?<!for \(.)(?<!while \(.)(?<!switch \(.)(?<!else \(.)(?<!\.short \(.)(?<!catch \(.)(?<!do \(.)'
