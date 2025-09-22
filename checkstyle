@@ -180,10 +180,9 @@ echo
 echo '---------- {something ----------'
 echo
 EXPR='{[^ \}]'
-EXCLEXPR='(?!{@link)(?!{\+\-})(?!{fr}\])'
+EXCLEXPR='(?!{@link)(?!{\+\-})(?!{fr}\])(?!{2,4,8,16,\.\.}-byte)'
 git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
 	filter_quotes |
-	filter_nasm_comments |
 	filter_loongson_comments
 # Process GAS files separately (we only check these because they contain some
 # C code in the comments.)
@@ -203,11 +202,10 @@ echo
 echo '---------- something} ----------'
 echo
 EXPR='[^ \{@]}'
-EXCLEXPR='(?<!{\+\-})(?<!\[{fr})'
+EXCLEXPR='(?<!{\+\-})(?<!\[{fr})(?<!{2,4,8,16,\.\.})'
 git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
 	grep -vE '\.java: +\* +.*'"$EXPR" |
 	filter_quotes |
-	filter_nasm_comments |
 	filter_loongson_comments
 # Process GAS files separately (we only check these because they contain some
 # C code in the comments.)
@@ -220,8 +218,11 @@ echo
 echo '---------- ... something } ----------'
 echo
 EXPR='^[^{]*[^ \}] +}'
-git grep -E "$EXPR" -- $FILES |
-	grep -vE 'simd/.*\.asm:.*;.*}'
+git grep -E "$EXPR" -- $FILES ':!*.asm'
+
+EXPR='^[^{]*[^ \};] +}'
+git grep -E "$EXPR" -- '*.asm'
+
 unset EXPR
 echo
 
@@ -230,7 +231,6 @@ echo
 EXPR='[^ @]{'
 EXCLEXPR='(?![\.(>]{@link)(?![\]\>]{\+\-})(?!\[{fr}\])'
 git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
-	filter_nasm_comments |
 	filter_loongson_comments
 unset EXPR
 unset EXCLEXPR
@@ -239,9 +239,9 @@ echo
 echo '---------- }something ----------'
 echo
 EXPR='}[^ ;,\)\.\(\[\<\]\"]'
-git grep -P "$EXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
-	filter_quotes |
-	filter_nasm_comments
+EXCLEXPR='(?<!{2,4,8,16,\.\.}-)'
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!.github/workflows' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
+	filter_quotes
 unset EXPR
 echo
 
@@ -267,8 +267,7 @@ done
 
 echo '---------- Semicolon spacing ----------'
 echo
-git grep -P '(?<!;) ;' -- $FILES $NFORMATTED ':!*.asm' ':!cjpeg.1' ':!win/*.def' ':!wizard.txt' |
-	filter_nasm_comments
+git grep -P '(?<!;) ;' -- $FILES $NFORMATTED ':!*.asm' ':!*.inc' ':!*.inc.h' ':!cjpeg.1' ':!win/*.def' ':!wizard.txt'
 echo
 
 echo '---------- Semicolon spacing in one-liners ----------'
@@ -361,8 +360,7 @@ echo
 EXPR=',[^ \)\$\"]'
 EXCLEXPR='(?<![\"\[])'
 git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCGFILES ':!.github/workflows' ':!*CMakeLists.txt' ':!*.1' ':!libjpeg.txt' ':!usage.txt' ':!wizard.txt' ':!release/rpm.spec.in' ':!win/*.rc.in' |
-	filter_nasm_comments |
-	grep -vE 'simd/.*\.asm:    .*[A-Z]+\([^\(\)]*'"$EXPR"'[^\(\)]*\)'
+	filter_nasm_comments
 # Process C and GAS files separately, so we can filter out the comments
 EXCLEXPR='(?<!'\'')'
 grep_without_c_comments "$EXCLEXPR""$EXPR" $CGFILES |
@@ -409,7 +407,6 @@ EXPR='[^ ]\b[\)\]]*'"$OP"
 EXCLEXPR='(?!1\-2\.nolist 0xFFFF)(?<!\.note\.gnu\.property note alloc noexec alig)(?!U\-stack noalloc)'
 git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' |
 	filter_nasm_comments |
-	pcregrep -v 'simd/.*(\.asm|\.inc):    .*'"$EXPR" |
 	grep -vE 'simd/.*(\.asm|\.inc\.h|\.inc):%(define|include|macro)'
 
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
@@ -442,10 +439,9 @@ echo '---------- No space after other operators ----------'
 echo
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/]|\>+|\<+|&+|\|+|\^)'
 EXPR="$OP"'[\(]*\b[^ ]'
-EXCLEXPR='(?!-F_[0-9]_[0-9]{3})(?!-[0-9\.]+$)(?!-2\.nolist 0xFFFF)(?<!\.note\.gnu\.property note alloc noexec align)(?!-stack noalloc)'
+EXCLEXPR='(?!-F_[0-9]_[0-9]{3})(?!-[0-9\.]+$)(?!-2\.nolist 0xFFFF)(?<!\.note\.gnu\.property note alloc noexec align)(?!-stack noalloc)(?!-DCTSIZE)(?!-SIZEOF_[XY]*MMWORD)(?!-\(2 \* SIZEOF_[XY]*MMWORD\))'
 git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 	filter_nasm_comments |
-	pcregrep -v 'simd/.*(\.asm|\.inc):    .*'"$EXPR" |
 	grep -vE 'simd/.*(\.asm|\.inc\.h|\.inc):[%#](define|include)'
 
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
