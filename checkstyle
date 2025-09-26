@@ -181,7 +181,7 @@ echo '---------- {something ----------'
 echo
 EXPR='{[^ \}]'
 EXCLEXPR='(?!{@link)(?!{\+\-})(?!{fr}\])(?!{2,4,8,16,\.\.}-byte)'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!simd/README.md' ':!test/tj*test*.in' ':!test/croptest.in' |
 	filter_quotes |
 	filter_loongson_comments
 # Process GAS files separately (we only check these because they contain some
@@ -203,7 +203,7 @@ echo '---------- something} ----------'
 echo
 EXPR='[^ \{@]}'
 EXCLEXPR='(?<!{\+\-})(?<!\[{fr})(?<!{2,4,8,16,\.\.})'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!test/tj*test*.in' ':!test/croptest.in' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!.github/workflows' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!/*.txt' ':!fuzz/build.sh' ':!java/README' ':!release/' ':!simd/README.md' ':!test/tj*test*.in' ':!test/croptest.in' |
 	grep -vE '\.java: +\* +.*'"$EXPR" |
 	filter_quotes |
 	filter_loongson_comments
