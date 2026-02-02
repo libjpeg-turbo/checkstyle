@@ -302,7 +302,7 @@ echo '---------- (type) var ----------'
 echo
 EXPR='(^| |\(|\*)\([^\)\(\> \*]*\) [A-Za-z0-9_\(\"\&][^ \&]'
 EXCLEXPR='(?<!\(sym\) wr)'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!/*.txt' ':!*.1' ':!java/README' ':!test/tj*test*.in' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!README.ijg' ':!change.log' ':!cmakescripts/' ':!/*.txt' ':!*.1' ':!java/README' ':!test/tj*test*.in' ':!release/uninstall.in' |
 	filter_nasm_comments
 # Process C, Java, and GAS files separately, so we can filter out the comments
 EXCLEXPR='(?<!if)'
