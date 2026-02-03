@@ -458,7 +458,7 @@ git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!*.md
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+/%]|\>+|\<+|&&|\|+|\^)(?<!\-\>)(?<!\+\+)(?<!\-\-)'
 EXPR="$OP"'[\(]*\b[^ ]'
 EXCLEXPR='(?!\-stack,)(?!%progbits)(?!%function)'
-grep_without_c_comments "$EXCLEXPR""$EXPR" $CJGFILES |
+grep_without_c_comments "$EXCLEXPR""$EXPR" -- $CJGFILES ':!simd/riscv64/jsimdcpu.S' |
 	filter_quotes |
 	pcregrep -v ':#include \<.*\>'
 
