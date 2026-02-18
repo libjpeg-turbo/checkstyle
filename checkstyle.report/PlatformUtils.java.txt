@@ -1,0 +1,8 @@
+Starting audit...
+[ERROR] /Users/drc/src/turbojpeg-java/org/scijava/util/PlatformUtils.java:47: Expected @return tag. [JavadocMethod]
+[ERROR] /Users/drc/src/turbojpeg-java/org/scijava/util/PlatformUtils.java:52: Expected @return tag. [JavadocMethod]
+[ERROR] /Users/drc/src/turbojpeg-java/org/scijava/util/PlatformUtils.java:57: Expected @return tag. [JavadocMethod]
+[ERROR] /Users/drc/src/turbojpeg-java/org/scijava/util/PlatformUtils.java:62: Expected @return tag. [JavadocMethod]
+[ERROR] /Users/drc/src/turbojpeg-java/org/scijava/util/PlatformUtils.java:67: Expected @return tag. [JavadocMethod]
+Audit done.
+Checkstyle ends with 5 errors.
