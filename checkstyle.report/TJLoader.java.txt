@@ -1,0 +1,4 @@
+Starting audit...
+[ERROR] /Users/drc/src/turbojpeg-java/org/libjpegturbo/turbojpeg/TJLoader.java:35:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
+Audit done.
+Checkstyle ends with 1 errors.

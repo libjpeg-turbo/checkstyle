@@ -1,0 +1,5 @@
+Starting audit...
+[ERROR] /Users/drc/src/turbojpeg-java/org/scijava/util/FileUtils.java:49:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
+[ERROR] /Users/drc/src/turbojpeg-java/org/scijava/util/FileUtils.java:54: Line is longer than 79 characters (found 80). [LineLength]
+Audit done.
+Checkstyle ends with 2 errors.
