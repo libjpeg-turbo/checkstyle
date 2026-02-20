@@ -291,7 +291,7 @@ echo
 echo '---------- (type**) ----------'
 echo
 EXPR='[^ \*]\*\*\)'
-git grep -E "$EXPR" -- $FILES ':!BUILDING.md' |
+git grep -E "$EXPR" -- $FILES ':!BUILDING.md' ':!java/README.md' |
 	filter_nasm_comments
 unset EXPR
 echo
