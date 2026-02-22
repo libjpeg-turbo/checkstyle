@@ -128,7 +128,7 @@ echo '********** DETECTING INCORRECT COMMENT FORMATTING **********'
 
 echo '---------- C++-style comments in C files ----------'
 echo
-git grep -P '(?<!http:)(?<!https:)(?<!ftp:)//' -- $FILES ':!*.java' ':!test/'
+git grep -P '(?<!http:)(?<!https:)(?<!ftp:)//' -- $FILES ':!.github/workflows/' ':!*.java' ':!test/'
 echo
 
 echo '---------- C-style trailing comments in Java files ----------'
@@ -170,7 +170,7 @@ echo '---------- {something ----------'
 echo
 EXPR='{[^ \}]'
 EXCLEXPR='(?!{@link)(?!{@code)'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!test/' |
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!test/' |
 	filter_quotes
 unset EXPR
 unset EXCLEXPR
@@ -186,7 +186,7 @@ echo
 echo '---------- something} ----------'
 echo
 EXPR='[^ \{@]}'
-git grep -P "$EXPR" -- $FILES ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!README.md' ':!test/' |
+git grep -P "$EXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!README.md' ':!test/' |
 	grep -vE '\.java: +\* +.*'"$EXPR" |
 	filter_quotes
 unset EXPR
@@ -203,7 +203,7 @@ echo '---------- something{ ----------'
 echo
 EXPR='[^ @]{'
 EXCLEXPR='(?![\.(>]{@link)'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!README.md' ':!test/'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!README.md' ':!test/'
 unset EXPR
 unset EXCLEXPR
 echo
@@ -211,7 +211,7 @@ echo
 echo '---------- }something ----------'
 echo
 EXPR='}[^ ;,\)\.\(\[\<\]\"]'
-git grep -P "$EXPR" -- $FILES ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!README.md' ':!test/'
+git grep -P "$EXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!README.md' ':!test/'
 unset EXPR
 echo
 
@@ -325,7 +325,7 @@ echo '---------- ,something ----------'
 echo
 EXPR=',[^ \)\$\"]'
 EXCLEXPR='(?<![\"\[])'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*CMakeLists.txt'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows/' ':!*CMakeLists.txt'
 unset EXPR
 unset EXCLEXPR
 echo
@@ -431,7 +431,7 @@ echo '********** DETECTING INCORRECT OPERATOR CONTINUANCE **********'
 echo
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^|\?|\:)'
 EXPR='^ *'"$OP"' +'
-git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.md'
+git grep -P "$EXPR" -- $FILES $NCJGFILES ':!.github/workflows/' ':!*.md'
 EXPR='^ *'"$OP"' +'
 grep_without_c_comments "$EXPR" $CJGFILES
 unset EXPR
