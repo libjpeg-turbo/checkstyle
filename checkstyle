@@ -502,7 +502,7 @@ EXCLEXPR='(?<!byte \(.)(?<!equ \(.)(?<!dd \(.)'
 git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!*.txt' ':!.github/workflows/' ':!cmakescripts/' ':!doc/' ':!README.ijg' ':!release/*.in' ':!test/croptest.in' |
 	filter_nasm_comments
 # Process C and GAS files separately, so we can parse out the comments
-EXCLEXPR='(?<!if \(.)(?<!return \(.)(?<!for \(.)(?<!while \(.)(?<!switch \(.)(?<!else \(.)(?<!\.short \(.)(?<!catch \(.)(?<!do \(.)'
+EXCLEXPR='(?<!if \(.)(?<!return \(.)(?<!for \(.)(?<!while \(.)(?<!switch \(.)(?<!else \(.)(?<!\.short \(.)(?<!catch \(.)(?<!do \(.)(?<!try \(.)'
 grep_without_c_comments "$EXPR""$EXCLEXPR" $CJGFILES |
 	filter_quotes
 echo
