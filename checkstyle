@@ -445,7 +445,7 @@ echo
 EXPR='\b \([^\*]'
 git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.md' ':!CMakeLists.txt' ':!cmakescripts/'
 # Process C and GAS files separately, so we can parse out the comments
-EXCLEXPR='(?<!if \(.)(?<!return \(.)(?<!for \(.)(?<!while \(.)(?<!switch \(.)(?<!else \(.)(?<!\.short \(.)(?<!catch \(.)(?<!do \(.)'
+EXCLEXPR='(?<!if \(.)(?<!return \(.)(?<!for \(.)(?<!while \(.)(?<!switch \(.)(?<!else \(.)(?<!\.short \(.)(?<!catch \(.)(?<!do \(.)(?<!try \(.)'
 grep_without_c_comments "$EXPR""$EXCLEXPR" $CJGFILES |
 	filter_quotes
 echo
