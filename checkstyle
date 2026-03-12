@@ -34,14 +34,14 @@ SCRIPTDIR=`dirname $0`
 set -f
 
 # Move along.  Nothing to format here.
-FILES='./* :!*.bmp :!*.icc :!*.jpg :!*.pgm :!*.ppm :!*.rtf :!*.rtf.in :!.gitattributes :!doc/turbojpeg/ :!fuzz/jpeg.dict :!simd/nasm/jsimdcfg.inc :!win/*.cmake.in :!win/gcc/ :!win/vc/'
+FILES='./* :!*.bmp :!*.icc :!*.jpg :!*.pgm :!*.png :!*.ppm :!*.rtf :!*.rtf.in :!.gitattributes :!doc/turbojpeg/ :!fuzz/jpeg.dict :!simd/nasm/jsimdcfg.inc :!src/spng/*LICENSE* :!src/spng/*.c :!src/spng/*.h :!win/*.cmake.in :!win/gcc/ :!win/vc/'
 
 # Files that use tabs for indentation
 TIFILES='doc/doxygen-extra.css fuzz/build.sh release/Distribution.xml.in release/installer.nsi.in release/make*.in release/rpm.spec.in release/uninstall.in test/'
 NTIFILES=$(for i in $TIFILES; do echo :!$i; done)
 
 # C, Java, and GAS files
-CGFILES='*.c *.cc *.h *.h.in :!*.inc.h *.S src/jconfig.txt'
+CGFILES='*.c *.cc *.h *.h.in :!*.inc.h *.S src/jconfig.txt :!src/spng/*.c :!src/spng/*.h'
 NCGFILES=':!*.c :!*.cc :!*.h :!*.h.in *.inc.h :!*.S :!src/jconfig.txt'
 CJGFILES="$CGFILES"' *.java'
 NCJGFILES="$NCGFILES"' :!*.java'
@@ -361,7 +361,7 @@ echo '********** DETECTING INCORRECT OPERATOR SPACING **********'
 echo '---------- Incorrect pointer operator spacing ----------'
 echo
 EXPR='[^ /]\* '
-git grep -E "$EXPR" -- $FILES $NCGFILES ':!*.md' ':!cmakescripts/GNUInstallDirs.cmake' ':!doc/*.txt' ':!README.ijg' ':!release/makemacpkg.in' ':!test/' |
+git grep -E "$EXPR" -- $FILES $NCGFILES ':!*.md' ':!cmakescripts/GNUInstallDirs.cmake' ':!doc/*.txt' ':!README.ijg' ':!release/makemacpkg.in' ':!test/' ':!testimages/LICENSE.txt' |
 	filter_quotes |
 	filter_nasm_comments
 # Process C and GAS files separately, so we can parse out the comments
