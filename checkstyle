@@ -236,13 +236,13 @@ echo '********** DETECTING INCORRECT STATEMENT SPACING **********'
 
 echo '---------- if( ----------'
 echo
-git grep -P '(?<!_g)if\(' -- $FILES ':!*CMakeLists.txt' ':!cmakescripts/'
+git grep -P '(?<!_g)if\(' -- $FILES ':!*CMakeLists.txt' ':!cmakescripts/' ':!*.cmake.in'
 echo
 
 for statement in for else catch while do switch; do
 	echo '---------- '$statement'( ----------'
 	echo
-	git grep -E $statement'\(' -- $FILES ':!*CMakeLists.txt' ':!cmakescripts/'
+	git grep -E $statement'\(' -- $FILES ':!*CMakeLists.txt' ':!cmakescripts/' ':!*.cmake.in'
 	git ls-files -- $FILES | while read file; do
 		pcregrep -H -M $statement' *\([^\n]*\n *{' $file
 	done
