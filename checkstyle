@@ -176,7 +176,7 @@ echo '---------- {something ----------'
 echo
 EXPR='{[^ \}]'
 EXCLEXPR='(?!{\+\-})(?!{fr}\])(?!{2,4,8,16,\.\.}-byte)'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!doc/*.txt' ':!fuzz/build.sh' ':!release/' ':!simd/README.md' ':!test/' |
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/*.cmake*' ':!doc/*.txt' ':!fuzz/build.sh' ':!release/' ':!simd/README.md' ':!test/' |
 	filter_quotes
 unset EXPR
 unset EXCLEXPR
@@ -193,7 +193,7 @@ echo '---------- something} ----------'
 echo
 EXPR='[^ \{@]}'
 EXCLEXPR='(?<!{\+\-})(?<!\[{fr})(?<!{2,4,8,16,\.\.})'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!doc/*.txt' ':!fuzz/build.sh' ':!release/' ':!simd/README.md' ':!test/' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/*.cmake*' ':!doc/*.txt' ':!fuzz/build.sh' ':!release/' ':!simd/README.md' ':!test/' |
 	filter_quotes
 unset EXPR
 unset EXCLEXPR
@@ -214,7 +214,7 @@ echo '---------- something{ ----------'
 echo
 EXPR='[^ @]{'
 EXCLEXPR='(?<!@SuppressWarnings)(?<!@FieldOrder)(?![\]\>]{\+\-})(?!\[{fr}\])'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!fuzz/build.sh' ':!release/' ':!test/'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/*.cmake*' ':!fuzz/build.sh' ':!release/' ':!test/'
 unset EXPR
 unset EXCLEXPR
 echo
@@ -223,7 +223,7 @@ echo '---------- }something ----------'
 echo
 EXPR='}[^ ;,\)\.\(\[\<\]\"]'
 EXCLEXPR='(?<!{2,4,8,16,\.\.}-)'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!doc/*.txt' ':!fuzz/build.sh' ':!release/' ':!test/' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!ChangeLog.md' ':!*CMakeLists.txt' ':!cmakescripts/*.cmake' ':!doc/*.txt' ':!fuzz/build.sh' ':!release/' ':!test/' |
 	filter_quotes
 unset EXPR
 unset EXCLEXPR
@@ -236,13 +236,13 @@ echo '********** DETECTING INCORRECT STATEMENT SPACING **********'
 
 echo '---------- if( ----------'
 echo
-git grep -P '(?<!_g)if\(' -- $FILES ':!*CMakeLists.txt' ':!cmakescripts/' ':!*.cmake.in'
+git grep -P '(?<!_g)if\(' -- $FILES ':!*CMakeLists.txt' ':!cmakescripts/*.cmake' ':!*.cmake.in'
 echo
 
 for statement in for else catch while do switch; do
 	echo '---------- '$statement'( ----------'
 	echo
-	git grep -E $statement'\(' -- $FILES ':!*CMakeLists.txt' ':!cmakescripts/' ':!*.cmake.in'
+	git grep -E $statement'\(' -- $FILES ':!*CMakeLists.txt' ':!cmakescripts/*.cmake' ':!*.cmake.in'
 	git ls-files -- $FILES | while read file; do
 		pcregrep -H -M $statement' *\([^\n]*\n *{' $file
 	done
@@ -258,7 +258,7 @@ echo '---------- Semicolon spacing in one-liners ----------'
 echo
 EXPR='; [^ }/\\]'
 EXCLEXPR='(?! *for \()(?!.*; \)$)(?!.*\) {)'
-grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!.github/workflows/' ':!CMakeLists.txt' ':!cmakescripts/' ':!doc/' ':!fuzz/build.sh' ':!LICENSE.md' ':!release/*.in' ':!test/' |
+grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!*.asm' ':!*.inc' ':!*.inc.h' ':!.github/workflows/' ':!CMakeLists.txt' ':!cmakescripts/*.cmake' ':!doc/' ':!fuzz/build.sh' ':!LICENSE.md' ':!release/*.in' ':!test/' |
 	filter_quotes
 unset EXPR
 unset EXCLEXPR
@@ -286,7 +286,7 @@ echo '---------- (type) var ----------'
 echo
 EXPR='(^| |\(|\*)\([^\)\(\> \*]*\) [A-Za-z0-9_\(\"\&][^ \&]'
 EXCLEXPR='(?<!\(sym\) wr)(?<! Copyright \(C\) [12][9012])'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!CMakeLists.txt' ':!cmakescripts/' ':!doc/' ':!README.ijg' ':!test/' ':!testimages/*.txt' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!CMakeLists.txt' ':!cmakescripts/*.cmake' ':!doc/' ':!README.ijg' ':!test/' ':!testimages/*.txt' |
 	filter_nasm_comments
 # Process C, Java, and GAS files separately, so we can filter out the comments
 EXCLEXPR='(?<!if)'
@@ -396,7 +396,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' |
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"
 EXCLEXPR='(?!_\*;)'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.md' ':!*.txt' ':!*.yml' ':!cmakescripts/' ':!doc/' ':!fuzz/build.sh' ':!README.ijg' ':!release/*.in' ':!test/' ':!win/*.rc.in'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.md' ':!*.txt' ':!*.yml' ':!cmakescripts/*.cmake' ':!doc/' ':!fuzz/build.sh' ':!README.ijg' ':!release/*.in' ':!test/' ':!win/*.rc.in'
 
 # Process C, Java, and GAS files separately, so we can filter out the comments
 OP='(?!\-\>)(?!\+\+)(?!\-\-)([=\+\-\*/%&\|\^\!\<\>]*=|[\+/%]|\*(?!\))|\-(?![0-9])|\>+|\<+|&&|&|\|+|\^)'
@@ -431,7 +431,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR="$OP"'[\(]*\b[^ ]'
-git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.md' ':!*.txt' ':!*.yml' ':!cmakescripts/' ':!doc/' ':!fuzz/build.sh' ':!README.ijg' ':!release/*.in' ':!test/' ':!win/*.rc.in'
+git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.asm' ':!*.inc' ':!*.md' ':!*.txt' ':!*.yml' ':!cmakescripts/*.cmake*' ':!doc/' ':!fuzz/build.sh' ':!README.ijg' ':!release/*.in' ':!test/' ':!win/*.rc.in'
 
 # NOTE: We can't check for *something or &something effectively, because
 # there's no way to distinguish those errors from valid pointer/address
@@ -489,7 +489,7 @@ echo '********** DETECTING INCORRECT FUNCTION SPACING **********'
 echo
 EXPR='\b \([^\*]'
 EXCLEXPR='(?<!byte \(.)(?<!equ \(.)(?<!dd \(.)'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!*.txt' ':!.github/workflows/' ':!cmakescripts/' ':!doc/' ':!README.ijg' ':!release/*.in' ':!test/croptest.in' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.md' ':!*.txt' ':!.github/workflows/' ':!cmakescripts/*.cmake*' ':!doc/' ':!README.ijg' ':!release/*.in' ':!test/croptest.in' |
 	filter_nasm_comments
 # Process C and GAS files separately, so we can parse out the comments
 EXCLEXPR='(?<!if \(.)(?<!return \(.)(?<!for \(.)(?<!while \(.)(?<!switch \(.)(?<!else \(.)(?<!\.short \(.)(?<!catch \(.)(?<!do \(.)(?<!try \(.)'
