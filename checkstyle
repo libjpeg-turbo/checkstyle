@@ -37,7 +37,7 @@ set -f
 FILES='./* :!*.bmp :!*.icc :!*.jpg :!*.ppm :!*.rtf :!*.rtf.in :!.gitattributes :!doc/ :!java/doc/ :!simd/nasm/jsimdcfg.inc :!win/*.cmake.in :!win/gcc/ :!win/vc/'
 
 # Files that use tabs for indentation
-TIFILES='croptest.in doxygen-extra.css fuzz/build.sh release/Distribution.xml.in release/installer.nsi.in release/make*.in release/rpm.spec.in release/uninstall.in tj*.in'
+TIFILES='croptest.in doxygen-extra.css droptest.in fuzz/build.sh release/Distribution.xml.in release/installer.nsi.in release/make*.in release/rpm.spec.in release/uninstall.in tj*.in'
 NTIFILES=$(for i in $TIFILES; do echo :!$i; done)
 
 # C, Java, and GAS files
@@ -176,7 +176,7 @@ echo '---------- {something ----------'
 echo
 EXPR='{[^ \}]'
 EXCLEXPR='(?!{@link)(?!{\+\-})(?!{fr}\])(?!{2,4,8,16,\.\.}-byte)'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!/*.txt' ':!.github/workflows/' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!croptest.in' ':!fuzz/build.sh' ':!release/' ':!tj*.in'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!*.S' ':!/*.txt' ':!.github/workflows/' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!croptest.in' ':!droptest.in' ':!fuzz/build.sh' ':!release/' ':!tj*.in'
 # Process GAS files separately (we only check these because they contain some
 # C code in the comments.)
 EXCLEXPR='(?!{[drq][0-9]+[,-}\[ ])(?!{[vYN][0-9]+\.[0-9]*[bdhs])(?!{TMP1,)'
@@ -196,7 +196,7 @@ echo '---------- something} ----------'
 echo
 EXPR='[^ \{@]}'
 EXCLEXPR='(?<!{\+\-})(?<!\[{fr})(?<!{2,4,8,16,\.\.})'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!/*.txt' ':!.github/workflows/' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!croptest.in' ':!fuzz/build.sh' ':!release/' ':!tj*.in' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!*.S' ':!/*.txt' ':!.github/workflows/' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!croptest.in' ':!droptest.in' ':!fuzz/build.sh' ':!release/' ':!tj*.in' |
 	grep -vE '\.java: +\* +.*'"$EXPR"
 # Process GAS files separately (we only check these because they contain some
 # C code in the comments.)
@@ -221,7 +221,7 @@ echo '---------- something{ ----------'
 echo
 EXPR='[^ @]{'
 EXCLEXPR='(?![\.(>]{@link)(?![\]\>]{\+\-})(?!\[{fr}\])'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!croptest.in' ':!fuzz/build.sh' ':!release/' ':!tj*.in'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES ':!.github/workflows/' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!croptest.in' ':!droptest.in' ':!fuzz/build.sh' ':!release/' ':!tj*.in'
 unset EXPR
 unset EXCLEXPR
 echo
@@ -230,7 +230,7 @@ echo '---------- }something ----------'
 echo
 EXPR='}[^ ;,\)\.\(\[\<\]\"]'
 EXCLEXPR='(?<!{2,4,8,16,\.\.}-)'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!/*.txt' ':!.github/workflows/' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!croptest.in' ':!fuzz/build.sh' ':!release/' ':!tj*.in'
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES ':!/*.txt' ':!.github/workflows/' ':!BUILDING.md' ':!*CMakeLists.txt' ':!cmakescripts/' ':!croptest.in' ':!droptest.in' ':!fuzz/build.sh' ':!release/' ':!tj*.in'
 unset EXPR
 unset EXCLEXPR
 echo
@@ -264,7 +264,7 @@ echo '---------- Semicolon spacing in one-liners ----------'
 echo
 EXPR='; [^ }/\\]'
 EXCLEXPR='(?! *for \()(?!.*; \)$)(?!.*\) {)'
-grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!*.1' ':!*.asm' ':!*.inc' ':!*.inc.h' ':!/*.txt' ':!.github/workflows/' ':!CMakeLists.txt' ':!change.log' ':!cmakescripts/' ':!croptest.in' ':!fuzz/build.sh' ':!LICENSE.md' ':!README.ijg' ':!release/*.in' ':!tj*.in' |
+grep_without_c_comments '^'"$EXCLEXPR"'.*'"$EXPR" $FILES ':!*.1' ':!*.asm' ':!*.inc' ':!*.inc.h' ':!/*.txt' ':!.github/workflows/' ':!CMakeLists.txt' ':!change.log' ':!cmakescripts/' ':!croptest.in' ':!droptest.in' ':!fuzz/build.sh' ':!LICENSE.md' ':!README.ijg' ':!release/*.in' ':!tj*.in' |
 	filter_quotes
 unset EXPR
 unset EXCLEXPR
@@ -369,7 +369,7 @@ echo '********** DETECTING INCORRECT OPERATOR SPACING **********'
 echo '---------- Incorrect pointer operator spacing ----------'
 echo
 EXPR='[^ /]\* '
-git grep -E "$EXPR" -- $FILES $NCGFILES ':!*.md' ':!/*.txt' ':!cmakescripts/GNUInstallDirs.cmake' ':!croptest.in' ':!README.ijg' ':!release/makemacpkg.in' ':!tj*.in' |
+git grep -E "$EXPR" -- $FILES $NCGFILES ':!*.md' ':!/*.txt' ':!cmakescripts/GNUInstallDirs.cmake' ':!croptest.in' ':!droptest.in' ':!README.ijg' ':!release/makemacpkg.in' ':!tj*.in' |
 	filter_quotes |
 	filter_nasm_comments
 # Process C and GAS files separately, so we can parse out the comments
@@ -404,7 +404,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' |
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR='[^ ]\b[\)\]]*'"$OP"
 EXCLEXPR='(?!_\*;)'
-git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.1' ':!*.asm' ':!*.inc' ':!*.md' ':!*.txt' ':!*.yml' ':!change.log' ':!cmakescripts/' ':!croptest.in' ':!doxygen.config' ':!fuzz/build.sh' ':!java/MANIFEST.MF' ':!README.ijg' ':!release/*.in' ':!tj*.in' ':!win/*.rc.in'
+git grep -P "$EXCLEXPR""$EXPR" -- $FILES $NCJGFILES ':!*.1' ':!*.asm' ':!*.inc' ':!*.md' ':!*.txt' ':!*.yml' ':!change.log' ':!cmakescripts/' ':!croptest.in' ':!droptest.in' ':!doxygen.config' ':!fuzz/build.sh' ':!java/MANIFEST.MF' ':!README.ijg' ':!release/*.in' ':!tj*.in' ':!win/*.rc.in'
 
 # Process C, Java, and GAS files separately, so we can filter out the comments
 OP='(?!\-\>)(?!\+\+)(?!\-\-)([=\+\-\*/%&\|\^\!\<\>]*=|[\+/%]|\*(?!\))|\-(?![0-9])|\>+|\<+|&&|&|\|+|\^)'
@@ -438,7 +438,7 @@ git grep -P "$EXCLEXPR""$EXPR" -- '*.asm' '*.inc' '*.inc.h' |
 
 OP='([=\+\-\*/%&\|\^\!\<\>]*=|[\+\-\*/%]|\>+|\<+|&+|\|+|\^)'
 EXPR="$OP"'[\(]*\b[^ ]'
-git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.1' ':!*.asm' ':!*.inc' ':!*.md' ':!*.txt' ':!*.yml' ':!change.log' ':!cmakescripts/' ':!croptest.in' ':!doxygen.config' ':!fuzz/build.sh' ':!java/MANIFEST.MF' ':!README.ijg' ':!release/*.in' ':!tj*.in' ':!win/*.rc.in'
+git grep -P "$EXPR" -- $FILES $NCJGFILES ':!*.1' ':!*.asm' ':!*.inc' ':!*.md' ':!*.txt' ':!*.yml' ':!change.log' ':!cmakescripts/' ':!croptest.in' ':!droptest.in' ':!doxygen.config' ':!fuzz/build.sh' ':!java/MANIFEST.MF' ':!README.ijg' ':!release/*.in' ':!tj*.in' ':!win/*.rc.in'
 
 # NOTE: We can't check for *something or &something effectively, because
 # there's no way to distinguish those errors from valid pointer/address
@@ -496,7 +496,7 @@ echo '********** DETECTING INCORRECT FUNCTION SPACING **********'
 echo
 EXPR='\b \([^\*]'
 EXCLEXPR='(?<!byte \(.)(?<!equ \(.)(?<!dd \(.)'
-git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.1' ':!*.md' ':!*.txt' ':!.github/workflows/' ':!change.log' ':!cmakescripts/' ':!croptest.in' ':!README.ijg' ':!release/*.in' |
+git grep -P "$EXPR""$EXCLEXPR" -- $FILES $NCJGFILES ':!*.1' ':!*.md' ':!*.txt' ':!.github/workflows/' ':!change.log' ':!cmakescripts/' ':!croptest.in' ':!droptest.in' ':!README.ijg' ':!release/*.in' |
 	filter_nasm_comments
 # Process C and GAS files separately, so we can parse out the comments
 EXCLEXPR='(?<!if \(.)(?<!return \(.)(?<!for \(.)(?<!while \(.)(?<!switch \(.)(?<!else \(.)(?<!\.short \(.)(?<!catch \(.)(?<!do \(.)(?<!try \(.)'
