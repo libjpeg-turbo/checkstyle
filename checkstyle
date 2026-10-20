@@ -271,7 +271,7 @@ echo '********** DETECTING INCORRECT FUNCTION/TYPE CAST SPACING **********'
 
 echo '---------- (type*) ----------'
 echo
-git grep -E '[^ \(\*]\*\)' -- $FILES ':!cmakescripts/GNUInstallDirs.cmake' ':!release/makemacpkg.in'
+git grep -E '[^ \(\*]\*\)' -- $FILES ':!cmakescripts/GNUInstallDirs.cmake' ':!release/make*.in'
 echo
 
 echo '---------- (type**) ----------'
@@ -361,7 +361,7 @@ echo '********** DETECTING INCORRECT OPERATOR SPACING **********'
 echo '---------- Incorrect pointer operator spacing ----------'
 echo
 EXPR='[^ /]\* '
-git grep -E "$EXPR" -- $FILES $NCGFILES ':!*.md' ':!cmakescripts/GNUInstallDirs.cmake' ':!doc/*.txt' ':!README.ijg' ':!release/makemacpkg.in' ':!test/' ':!testimages/LICENSE.txt' |
+git grep -E "$EXPR" -- $FILES $NCGFILES ':!*.md' ':!cmakescripts/GNUInstallDirs.cmake' ':!doc/*.txt' ':!README.ijg' ':!release/make*.in' ':!test/' ':!testimages/LICENSE.txt' |
 	filter_quotes |
 	filter_nasm_comments
 # Process C and GAS files separately, so we can parse out the comments
