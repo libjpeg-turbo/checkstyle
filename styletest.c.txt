@@ -28,7 +28,7 @@ styletest.c:455: new blank line at EOF.
 
 styletest.c:// hit
 
----------- C-style trailing comments in Java files ----------
+---------- C-style comments in Java files ----------
 
 
 

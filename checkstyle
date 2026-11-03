@@ -137,9 +137,9 @@ echo
 git grep -P '(?<!http:)(?<!https:)(?<!ftp:)(?<!s3:)//' -- $FILES ':!*.java' ':!jna/README.md' ':!release/makesrpm.in' ':!test/rgb565test.in' ':!test/tjbenchtest.in'
 echo
 
-echo '---------- C-style trailing comments in Java files ----------'
+echo '---------- C-style comments in Java files ----------'
 echo
-git grep -E '[^ ] +\/\*' -- '*.java'
+git grep -E '(/\*|\*/)' -- '*.java'
 echo
 
 echo # ************************************************************************

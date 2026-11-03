@@ -23,7 +23,7 @@
 ---------- C++-style comments in C files ----------
 
 
----------- C-style trailing comments in Java files ----------
+---------- C-style comments in Java files ----------
 
 
 
